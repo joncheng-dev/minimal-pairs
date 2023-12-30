@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import DropDownForm from "./Form";
 import MainPage from "./MainPage";
 import Form from "./Form";
+import { collection, onSnapshot } from "firebase/firestore";
+import db from "./../firebase";
+import Results from "./Results";
 
 function Control() {
   const arrayOfValues = ["--", "1", "2", "3"];
@@ -9,11 +12,40 @@ function Control() {
   // const [formVisible, setFormVisible] = useState(false);
   const [valueFromForm, setValueFromForm] = useState(null);
   const [valueFromForm2, setValueFromForm2] = useState(null);
+  const [pairResults, setPairResults] = useState(null);
 
   // Functions
   // const handleClick = () => {
   //   setFormVisible(!formVisible);
   // };
+
+  useEffect(() => {
+    console.log("pairResults updated: ", pairResults);
+    console.log("pairResults is of type: ", typeof pairResults);
+    console.log("Object.keys(pairResults): ", Object.keys(pairResults));
+  }, [pairResults]);
+
+  useEffect(() => {
+    const unSubscribe = onSnapshot(
+      collection(db, "consonant-pairs"),
+      (collectionSnapshot) => {
+        const results = [];
+        collectionSnapshot.forEach((doc) => {
+          results.push({
+            id: doc.data().id,
+            pairs: doc.data().pairs,
+          });
+        });
+        setPairResults(results);
+      },
+      (error) => {
+        // do something with error
+        console.log("There was an error: ", error.message);
+      }
+    );
+
+    return () => unSubscribe();
+  }, []);
 
   function collectValuesFromForm(firstValue, secondValue) {
     setValueFromForm(firstValue);
@@ -36,6 +68,7 @@ function Control() {
   // Rendering
   return (
     <>
+      <Results results={pairResults} />
       {currentlyVisiblePage}
       <Form dropDown1Options={arrayOfValues} collectValuesFromForm={collectValuesFromForm} />
       <hr />
