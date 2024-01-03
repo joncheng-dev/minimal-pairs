@@ -2,13 +2,18 @@ import React from "react";
 
 function Results(props) {
   const { results } = props;
-  console.log("Object.keys(results): ", Object.keys(results));
   return (
     <>
-      <p>id: {results.id}</p>
+      <p>Results</p>
       <ul>
-        {results.pairs.map((entry, index) => (
-          <li key={index}>{entry}</li>
+        {results.map((entry, index) => (
+          <li key={index}>
+            <p>Id: {entry[index].id}</p>
+            <p>Pair: </p>
+            <p>{entry[index].pair.join(", ")}</p>
+            {/* <p>{entry[index].pair[0]}</p>
+            <p>{entry[index].pair[1]}</p> */}
+          </li>
         ))}
       </ul>
     </>

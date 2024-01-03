@@ -3,6 +3,7 @@ import DropDownForm from "./Form";
 import MainPage from "./MainPage";
 import Form from "./Form";
 import { collection, onSnapshot } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import db from "./../firebase";
 import Results from "./Results";
 
@@ -20,22 +21,18 @@ function Control() {
   // };
 
   useEffect(() => {
-    console.log("pairResults updated: ", pairResults);
-    console.log("pairResults is of type: ", typeof pairResults);
-    console.log("Object.keys(pairResults): ", Object.keys(pairResults));
-  }, [pairResults]);
-
-  useEffect(() => {
     const unSubscribe = onSnapshot(
       collection(db, "consonant-pairs"),
       (collectionSnapshot) => {
         const results = [];
         collectionSnapshot.forEach((doc) => {
-          results.push({
-            id: doc.data().id,
-            pairs: doc.data().pairs,
-          });
+          results.push(
+            doc.data()
+            // id: entry.data().id,
+            // pairs: entry.data().pairs,
+          );
         });
+        console.log("results: ", results);
         setPairResults(results);
       },
       (error) => {
@@ -46,6 +43,11 @@ function Control() {
 
     return () => unSubscribe();
   }, []);
+
+  useEffect(() => {
+    console.log("pairResults updated: ", pairResults);
+    console.log("pairResults is of type: ", typeof pairResults);
+  }, [pairResults]);
 
   function collectValuesFromForm(firstValue, secondValue) {
     setValueFromForm(firstValue);
@@ -68,7 +70,7 @@ function Control() {
   // Rendering
   return (
     <>
-      <Results results={pairResults} />
+      {pairResults ? <Results results={pairResults} /> : ""}
       {currentlyVisiblePage}
       <Form dropDown1Options={arrayOfValues} collectValuesFromForm={collectValuesFromForm} />
       <hr />
