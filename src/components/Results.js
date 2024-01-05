@@ -2,17 +2,19 @@ import React from "react";
 
 function Results(props) {
   const { results } = props;
+  console.log("results inside Results.js: ", results);
   return (
     <>
       <p>Results</p>
       <ul>
         {results.map((entry, index) => (
           <li key={index}>
-            <p>Id: {entry[index].id}</p>
-            <p>Pair: </p>
-            <p>{entry[index].pair.join(", ")}</p>
-            {/* <p>{entry[index].pair[0]}</p>
-            <p>{entry[index].pair[1]}</p> */}
+            {Object.keys(entry).map((key) => (
+              <div key={key}>
+                <p>ID: {entry[key].id}</p>
+                <p>Pair: {entry[key].pair.join(", ")}</p>
+              </div>
+            ))}
           </li>
         ))}
       </ul>
