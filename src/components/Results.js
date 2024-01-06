@@ -8,14 +8,14 @@ function Results(props) {
       <p>Results</p>
       <ul>
         {results.map((entry, index) => (
-          <li key={index}>
+          <div key={index}>
             {Object.keys(entry).map((key) => (
-              <div key={key}>
+              <li key={key}>
                 <p>ID: {entry[key].id}</p>
                 <p>Pair: {entry[key].pair.join(", ")}</p>
-              </div>
+              </li>
             ))}
-          </li>
+          </div>
         ))}
       </ul>
     </>
