@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 
 function Form(props) {
-  const { dropDown1Options, collectValuesFromForm } = props;
+  const { dropDown1Options, collectValuesFromForm, numPairsOptions } = props;
   const [value1, setValue1] = useState(null);
   const [value2, setValue2] = useState(null);
   const [dropDown2Visible, setDropDown2Visible] = useState(false);
   const [dropDown2Options, setDropDown2Options] = useState(dropDown1Options);
+  const [numPairsSelected, setNumPairsToShow] = useState(null);
 
   useEffect(() => {
     console.log("value 1 has been selected: ", value1);
@@ -18,7 +19,7 @@ function Form(props) {
 
   function onFormSubmission(event) {
     event.preventDefault();
-    collectValuesFromForm(value1, value2);
+    collectValuesFromForm(value1, value2, numPairsSelected);
   }
 
   return (
@@ -43,6 +44,18 @@ function Form(props) {
             ))}
           </select>
         )}
+        <hr />
+        <br />
+        <p>Select the numbers of pairs you want to view</p>
+        <select onChange={(event) => setNumPairsToShow(event.target.value)}>
+          {numPairsOptions.map((option, index) => (
+            <option key={index} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+        <br />
+        <br />
         <button type="submit">Submit Selection</button>
       </form>
     </>
