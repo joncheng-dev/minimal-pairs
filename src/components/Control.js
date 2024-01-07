@@ -17,7 +17,7 @@ function Control() {
 
   // Functions
   function concatenateUserInput(valueFromForm, valueFromForm2) {
-    const query = valueFromForm.concat("v", valueFromForm2);
+    const query = valueFromForm.concat(valueFromForm2);
     console.log("concatenateUserInput: ", query);
     setUserQuery(query);
   }
@@ -38,6 +38,15 @@ function Control() {
         setResultsToUI(docSnap.data());
       } else {
         console.log("No such document!");
+        const reversedQuery = userQuery.split("").reduce((accumulator, char) => char + accumulator, "");
+        const docRef = doc(db, "consonant-pairs", reversedQuery);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          console.log("Document data: ", docSnap.data());
+          setResultsToUI(docSnap.data());
+        } else {
+          console.log("No such document!");
+        }
       }
     }
   }
