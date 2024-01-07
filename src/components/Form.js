@@ -7,6 +7,8 @@ function Form(props) {
   const [dropDown2Visible, setDropDown2Visible] = useState(false);
   const [dropDown2Options, setDropDown2Options] = useState(dropDown1Options);
   const [numPairsSelected, setNumPairsToShow] = useState(null);
+  const [selectedOption1, setSelectedOption1] = useState("(make a selection)");
+  const [selectedOption2, setSelectedOption2] = useState("(make a selection)");
 
   useEffect(() => {
     // console.log("value 1 has been selected: ", value1);
@@ -23,12 +25,23 @@ function Form(props) {
     collectValuesFromForm(value1, value2, numPairsSelected);
   }
 
+  const handleChange1 = (event) => {
+    setValue1(event.target.value);
+    setSelectedOption1(event.target.value);
+  };
+
+  const handleChange2 = (event) => {
+    setValue2(event.target.value);
+    setSelectedOption2(event.target.value);
+  };
+
   return (
     <>
       <h2>Form</h2>
       <form onSubmit={onFormSubmission}>
         {/* First Dropdown Menu */}
-        <select onChange={(event) => setValue1(event.target.value)}>
+        <select value={selectedOption1} onChange={handleChange1}>
+          <option value={"(make a selection)"}>(make a selection)</option>
           {dropDown1Options.map((option, index) => (
             <option key={index} value={option}>
               {option}
@@ -37,7 +50,8 @@ function Form(props) {
         </select>
         {/* Second Dropdown Menu */}
         {dropDown2Visible && (
-          <select onChange={(event) => setValue2(event.target.value)}>
+          <select value={selectedOption2} onChange={handleChange2}>
+            <option value={"(make a selection)"}>(make a selection)</option>
             {dropDown2Options.map((option, index) => (
               <option key={index} value={option}>
                 {option}
@@ -48,7 +62,8 @@ function Form(props) {
         <hr />
         <br />
         <p>Select the numbers of pairs you want to view</p>
-        <select onChange={(event) => setNumPairsToShow(event.target.value)}>
+        <select defaultValue={"(make a selection)"} onChange={(event) => setNumPairsToShow(event.target.value)}>
+          <option value={"(make a selection)"}>(make a selection)</option>
           {numPairsOptions.map((option, index) => (
             <option key={index} value={option}>
               {option}

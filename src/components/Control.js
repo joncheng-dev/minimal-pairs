@@ -8,8 +8,8 @@ import db from "./../firebase";
 import Results from "./Results";
 
 function Control() {
-  const arrayOfValues = ["--", "B", "L", "R", "V"];
-  const arrayOfNumPairChoices = ["--", "1", "2", "3", "4", "5"];
+  const arrayOfValues = ["B", "L", "R", "V"];
+  const arrayOfNumPairChoices = ["1", "2", "3", "4", "5"];
   // useState controls state
   // const [formVisible, setFormVisible] = useState(false);
   const [userQuery, setUserQuery] = useState(null);
@@ -35,14 +35,17 @@ function Control() {
 
       if (docSnap.exists()) {
         console.log("Document data: ", docSnap.data());
+        console.log("Document num Fields: ", Object.keys(docSnap.data()).length);
         setResultsToUI(docSnap.data());
       } else {
-        console.log("No such document!");
+        console.log("No such document. Reversing query!");
         const reversedQuery = userQuery.split("").reduce((accumulator, char) => char + accumulator, "");
+        console.log("reversedQuery is: ", reversedQuery);
         const docRef = doc(db, "consonant-pairs", reversedQuery);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           console.log("Document data: ", docSnap.data());
+          console.log("Document num Fields: ", Object.keys(docSnap.data()).length);
           setResultsToUI(docSnap.data());
         } else {
           console.log("No such document!");
@@ -50,6 +53,10 @@ function Control() {
       }
     }
   }
+
+  // number of pairs in that document. Let's say there are 100. -- Number of Fields in a Document
+  // Randomly select X number of Ids, where X is "numberOfPairs" chosen by user.
+  // send to the Results page these pairs.
 
   useEffect(() => {
     queryFirebaseDocs();
