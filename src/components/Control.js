@@ -12,27 +12,19 @@ function Control() {
   const arrayOfNumPairChoices = ["--", "1", "2", "3", "4", "5"];
   // useState controls state
   // const [formVisible, setFormVisible] = useState(false);
-  const [valueFromForm, setValueFromForm] = useState(null);
-  const [valueFromForm2, setValueFromForm2] = useState(null);
-  const [numPairsToShow, setNumPairsToShow] = useState(null);
-  const [resultsToUI, setResultsToUI] = useState(null);
   const [userQuery, setUserQuery] = useState(null);
+  const [resultsToUI, setResultsToUI] = useState(null);
 
   // Functions
+  function concatenateUserInput(valueFromForm, valueFromForm2) {
+    const query = valueFromForm.concat("v", valueFromForm2);
+    console.log("concatenateUserInput: ", query);
+    setUserQuery(query);
+  }
 
   // Populate variable userQuery with user form results
   function collectValuesFromForm(firstValue, secondValue, numberOfPairs) {
-    setValueFromForm(firstValue.toString());
-    setValueFromForm2(secondValue.toString());
-    setNumPairsToShow(numberOfPairs);
-  }
-
-  function concatenateUserInput() {
-    if (valueFromForm !== null && valueFromForm2 !== null) {
-      const query = valueFromForm.concat("v", valueFromForm2);
-      console.log("concatenateUserInput: ", query);
-      setUserQuery(query);
-    }
+    concatenateUserInput(firstValue, secondValue);
   }
 
   async function queryFirebaseDocs() {
@@ -49,10 +41,6 @@ function Control() {
       }
     }
   }
-
-  useEffect(() => {
-    concatenateUserInput();
-  }, [numPairsToShow]);
 
   useEffect(() => {
     queryFirebaseDocs();
@@ -79,11 +67,11 @@ function Control() {
       {currentlyVisiblePage}
       <Form dropDown1Options={arrayOfValues} numPairsOptions={arrayOfNumPairChoices} collectValuesFromForm={collectValuesFromForm} />
       <hr />
-      <p>First Value Selected:</p>
+      {/* <p>First Value Selected:</p>
       {valueFromForm ? <p>{valueFromForm}</p> : <p>No 1st value selected</p>}
       <hr />
       <p>Second Value Selected:</p>
-      {valueFromForm2 ? <p>{valueFromForm2}</p> : <p>No 2nd value selected</p>}
+      {valueFromForm2 ? <p>{valueFromForm2}</p> : <p>No 2nd value selected</p>} */}
       {/* <button onClick={handleClick}>{buttonText}</button> */}
     </>
   );

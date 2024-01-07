@@ -9,7 +9,7 @@ function Form(props) {
   const [numPairsSelected, setNumPairsToShow] = useState(null);
 
   useEffect(() => {
-    console.log("value 1 has been selected: ", value1);
+    // console.log("value 1 has been selected: ", value1);
     const filteredOptions = dropDown1Options.filter((entries) => entries !== value1);
     setDropDown2Options(filteredOptions);
     if (value1 !== null) {
@@ -19,7 +19,7 @@ function Form(props) {
 
   function onFormSubmission(event) {
     event.preventDefault();
-    console.log("value1, value2, numPairsSelected: ", value1, value2, numPairsSelected);
+    // console.log("value1, value2, numPairsSelected: ", value1, value2, numPairsSelected);
     collectValuesFromForm(value1, value2, numPairsSelected);
   }
 
