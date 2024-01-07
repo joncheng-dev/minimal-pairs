@@ -19,6 +19,7 @@ function Form(props) {
 
   function onFormSubmission(event) {
     event.preventDefault();
+    console.log("value1, value2, numPairsSelected: ", value1, value2, numPairsSelected);
     collectValuesFromForm(value1, value2, numPairsSelected);
   }
 

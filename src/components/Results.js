@@ -6,15 +6,17 @@ function Results(props) {
   return (
     <>
       <p>Results</p>
-      <ul>
-        {Object.values(results).map((entry, index) => (
-          <div key={entry.id}>
+      {Object.values(results).map((entry, index) => (
+        <div key={entry.id}>
+          <ul>
             <li>Id: {entry.id}</li>
-            <li>{entry.pair[0]}</li>
-            <li>{entry.pair[1]}</li>
-          </div>
-        ))}
-      </ul>
+            <ul>
+              <li>{entry.pair[0]}</li>
+              <li>{entry.pair[1]}</li>
+            </ul>
+          </ul>
+        </div>
+      ))}
     </>
   );
 }

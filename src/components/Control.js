@@ -9,56 +9,18 @@ import Results from "./Results";
 
 function Control() {
   const arrayOfValues = ["--", "B", "L", "R", "V"];
-  const arrayOfNumPairChoices = ["1", "2", "3", "4", "5"];
+  const arrayOfNumPairChoices = ["--", "1", "2", "3", "4", "5"];
   // useState controls state
   // const [formVisible, setFormVisible] = useState(false);
   const [valueFromForm, setValueFromForm] = useState(null);
   const [valueFromForm2, setValueFromForm2] = useState(null);
-  const [pairResults, setPairResults] = useState(null);
   const [numPairsToShow, setNumPairsToShow] = useState(null);
+  const [resultsToUI, setResultsToUI] = useState(null);
   const [userQuery, setUserQuery] = useState(null);
 
   // Functions
-  // const handleClick = () => {
-  //   setFormVisible(!formVisible);
-  // };
-
-  // useEffect(() => {
-  //   const unSubscribe = onSnapshot(
-  //     collection(db, "consonant-pairs"),
-  //     (collectionSnapshot) => {
-  //       const results = [];
-  //       collectionSnapshot.forEach((doc) => {
-  //         results.push(
-  //           doc.data()
-  //           // id: entry.data().id,
-  //           // pairs: entry.data().pairs,
-  //         );
-  //       });
-  //       console.log("results: ", results);
-  //       setPairResults(results);
-  //     },
-  //     (error) => {
-  //       // do something with error
-  //       console.log("There was an error: ", error.message);
-  //     }
-  //   );
-
-  //   return () => unSubscribe();
-  // }, []);
-
-  // useEffect(() => {
-  //   const results = [];
-  //   const unSubscribe = onSnapshot(doc(db, "consonant-pairs", userQuery), (doc) => {
-  //     results.push(doc.data());
-  //   });
-  //   console.log("results: ", results);
-  //   setPairResults(results);
-  //   return () => unSubscribe();
-  // }, []);
 
   // Populate variable userQuery with user form results
-
   function collectValuesFromForm(firstValue, secondValue, numberOfPairs) {
     setValueFromForm(firstValue.toString());
     setValueFromForm2(secondValue.toString());
@@ -73,26 +35,28 @@ function Control() {
     }
   }
 
+  async function queryFirebaseDocs() {
+    if (userQuery !== null) {
+      console.log("queryFirebaseDocs triggered, userQuery: ", userQuery);
+      const docRef = doc(db, "consonant-pairs", userQuery);
+      const docSnap = await getDoc(docRef);
+
+      if (docSnap.exists()) {
+        console.log("Document data: ", docSnap.data());
+        setResultsToUI(docSnap.data());
+      } else {
+        console.log("No such document!");
+      }
+    }
+  }
+
   useEffect(() => {
-    console.log("pairResults updated: ", pairResults);
     concatenateUserInput();
-  }, [pairResults]);
+  }, [numPairsToShow]);
 
   useEffect(() => {
     queryFirebaseDocs();
   }, [userQuery]);
-
-  async function queryFirebaseDocs() {
-    const docRef = doc(db, "consonant-pairs", "BvV");
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      console.log("Document data: ", docSnap.data());
-      setPairResults(docSnap.data());
-    } else {
-      console.log("No such document!");
-    }
-  }
 
   let currentlyVisiblePage = null;
   let buttonText = null;
@@ -110,7 +74,7 @@ function Control() {
   // Rendering
   return (
     <>
-      {pairResults ? <Results results={pairResults} /> : ""}
+      {resultsToUI ? <Results results={resultsToUI} /> : ""}
       <hr />
       {currentlyVisiblePage}
       <Form dropDown1Options={arrayOfValues} numPairsOptions={arrayOfNumPairChoices} collectValuesFromForm={collectValuesFromForm} />
@@ -126,3 +90,41 @@ function Control() {
 }
 
 export default Control;
+
+// const handleClick = () => {
+//   setFormVisible(!formVisible);
+// };
+
+// useEffect(() => {
+//   const unSubscribe = onSnapshot(
+//     collection(db, "consonant-pairs"),
+//     (collectionSnapshot) => {
+//       const results = [];
+//       collectionSnapshot.forEach((doc) => {
+//         results.push(
+//           doc.data()
+//           // id: entry.data().id,
+//           // pairs: entry.data().pairs,
+//         );
+//       });
+//       console.log("results: ", results);
+//       setPairResults(results);
+//     },
+//     (error) => {
+//       // do something with error
+//       console.log("There was an error: ", error.message);
+//     }
+//   );
+
+//   return () => unSubscribe();
+// }, []);
+
+// useEffect(() => {
+//   const results = [];
+//   const unSubscribe = onSnapshot(doc(db, "consonant-pairs", userQuery), (doc) => {
+//     results.push(doc.data());
+//   });
+//   console.log("results: ", results);
+//   setPairResults(results);
+//   return () => unSubscribe();
+// }, []);
