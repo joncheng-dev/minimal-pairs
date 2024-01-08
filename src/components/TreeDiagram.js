@@ -1,6 +1,12 @@
 import React from "react";
 import Tree from "react-d3-tree";
 import "../styles/tree-diagram.css";
+import { useCenteredTree } from "./TreeHelper";
+
+const containerStyles = {
+  width: "70vw",
+  height: "50vh",
+};
 
 function TreeDiagram() {
   const testData = {
@@ -11,11 +17,20 @@ function TreeDiagram() {
     ],
   };
 
+  // var svg = d3
+  //   .select("div#container")
+  //   .append("svg")
+  //   .attr("preserveAspectRatio", "xMinYMin meet")
+  //   .attr("viewBox", "0 0 300 300")
+  //   .classed("svg-content", true);
+  const [dimensions, translate, containerRef] = useCenteredTree();
   return (
     <>
-      <div id="treeWrapper">
+      <div style={containerStyles} ref={containerRef} className="svg-container">
         <Tree
           data={testData}
+          dimensions={dimensions}
+          translate={translate}
           orientation="vertical"
           rootNodeClassName="node__root"
           branchNodeClassName="node__branch"
@@ -28,6 +43,12 @@ function TreeDiagram() {
 }
 
 export default TreeDiagram;
+
+// <div id="container" className="svg-container">
+//   <svg className="svg-content" viewBox="0 0 300 300" preserveAspectRatio="xMidYMid meet">
+//     {svg}
+//   </svg>
+// </div>;
 
 // import React, { useRef, useEffect } from "react";
 // import "../styles/tree-diagram.css";
