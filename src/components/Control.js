@@ -6,6 +6,7 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { doc, getDoc } from "firebase/firestore";
 import db from "./../firebase";
 import Results from "./Results";
+import TreeDiagram from "./TreeDiagram";
 
 function Control() {
   const arrayOfValues = ["B", "L", "R", "V"];
@@ -60,19 +61,7 @@ function Control() {
     }
   }
 
-  // number of pairs in that document. Let's say there are 100. -- Number of Fields in a Document
-  // Randomly select X number of Ids, where X is "numberOfPairs" chosen by user.
-  // send to the Results page these pairs.
-
-  // WIP: Randomly choose pairs
-  // Consider the queried document, i.e.LR, take the number of pairs
-  // Object.keys(docSnap.data()).length);
-  // Randomly select a quantity of pairs, chosen by user -- "numberOfPairs"
-  // Send these pairs to the results
-
   function randomPairPicker(numPairsAvailable, numPairsToSelect) {
-    // Pass in numbers of pairs wanted (numPairsToSelect).
-    // Pass in numbers of pairs available in that document (numPairsAvailable)
     let randomlySelectedIds = new Set(),
       ans;
     while (randomlySelectedIds.size < numPairsToSelect) {
@@ -87,21 +76,18 @@ function Control() {
   // Now that we have an array of random Ids..
   // Use this to filter the document
   function filterDocResults(document, arrayOfSelectedIds) {
-    console.log("filterDocResults, document: ", document);
     const convertedArray = arrayOfSelectedIds.map(String);
-    console.log("filterDocResults, convertedArray: ", convertedArray);
     const docResultsToArray = Object.entries(document);
-    console.log("filterDocResults, docResultsToArray: ", docResultsToArray);
-    const filteredResults = docResultsToArray.filter((entry) => convertedArray.includes(entry["0"]));
-    console.log("filterDocResults, filteredResults: ", filteredResults);
+    const filteredResults = docResultsToArray.filter((entry) => convertedArray.includes(entry[0]));
     const convertedBackToObj = Object.fromEntries(filteredResults);
-    console.log("filterDocResults, convertedBackToObj: ", convertedBackToObj);
     setResultsToUI(convertedBackToObj);
   }
 
   useEffect(() => {
     gatherAndFilterResults();
-  }, [userQuery]);
+  }, [userQuery, numPairsSelected]);
+  // NOTE: Form submit only triggers gatherAndFilterResults() when userQuery or numPairsSelected have been altered.
+  // Currently does not re-randomize results if submit clicked for a second consecutive time.
 
   let currentlyVisiblePage = null;
   let buttonText = null;
@@ -119,6 +105,8 @@ function Control() {
   // Rendering
   return (
     <>
+      <h2>Tree Diagram</h2>
+      <TreeDiagram />
       {resultsToUI ? <Results results={resultsToUI} /> : ""}
       <hr />
       {currentlyVisiblePage}
