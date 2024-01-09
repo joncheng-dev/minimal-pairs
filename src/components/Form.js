@@ -69,7 +69,7 @@ function Form(props) {
         )}
         <hr />
         <br />
-        <p>Select the numbers of pairs you want to view</p>
+        <p>Select the number of rows you'd like to view</p>
         <select defaultValue={"(make a selection)"} onChange={(event) => setNumPairsToShow(event.target.value)}>
           <option value={"(make a selection)"}>(make a selection)</option>
           {numPairsOptions.map((option, index) => (

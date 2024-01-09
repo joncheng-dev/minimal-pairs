@@ -10,7 +10,8 @@ import TreeDiagram from "./TreeDiagram";
 
 function Control() {
   const arrayOfValues = ["B", "L", "R", "V"];
-  const arrayOfNumPairChoices = ["1", "2", "3", "4", "5", "6", "7"];
+  // 1 row is 1 pair, 2 rows is 3 pairs, 3 rows is 7 pairs, 4 rows is 15 pairs
+  const arrayOfRowsToDisplay = ["1", "2", "3", "4"];
   // useState controls state
   // const [formVisible, setFormVisible] = useState(false);
   const [userQuery, setUserQuery] = useState(null);
@@ -29,13 +30,24 @@ function Control() {
   }
 
   // Populate variable userQuery with user form results
-  function collectValuesFromForm(firstValue, secondValue, numberOfPairs) {
+  function collectValuesFromForm(firstValue, secondValue, numberOfRows) {
     concatenateUserInput(firstValue, secondValue);
     determineTreeDiagramName(firstValue, secondValue);
-    setNumPairsSelected(numberOfPairs);
+    if (numberOfRows === "1") {
+      setNumPairsSelected(1);
+    } else if (numberOfRows === "2") {
+      setNumPairsSelected(3);
+    } else if (numberOfRows === "3") {
+      setNumPairsSelected(7);
+    } else if (numberOfRows === "4") {
+      setNumPairsSelected(15);
+    }
   }
 
-  // WIP: Allow user to choose "consonant-pairs" or "vowels-diphthongs"
+  // WIP:
+  // Allow user to choose "consonant-pairs" or "vowels-diphthongs"
+  // Display up to 15 results.
+  // Change UI form to show
 
   async function gatherAndFilterResults() {
     if (userQuery !== null) {
@@ -91,6 +103,7 @@ function Control() {
 
   useEffect(() => {
     gatherAndFilterResults();
+    console.log("collectValuesFromForm, numPairsSelected", numPairsSelected);
   }, [userQuery, numPairsSelected]);
   // NOTE: Form submit only triggers gatherAndFilterResults() when userQuery or numPairsSelected have been altered.
   // Currently does not re-randomize results if submit clicked for a second consecutive time.
@@ -116,7 +129,7 @@ function Control() {
       {resultsToUI ? <Results results={resultsToUI} /> : ""}
       <hr />
       {currentlyVisiblePage}
-      <Form dropDown1Options={arrayOfValues} numPairsOptions={arrayOfNumPairChoices} collectValuesFromForm={collectValuesFromForm} />
+      <Form dropDown1Options={arrayOfValues} numPairsOptions={arrayOfRowsToDisplay} collectValuesFromForm={collectValuesFromForm} />
       <hr />
       {/* <p>First Value Selected:</p>
       {valueFromForm ? <p>{valueFromForm}</p> : <p>No 1st value selected</p>}
