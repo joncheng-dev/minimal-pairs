@@ -67,6 +67,114 @@ function TreeDiagram(props) {
           },
         ],
       };
+    } else if (dataToUse.length === 15) {
+      return {
+        name: treeDiagramName,
+        children: [
+          {
+            name: dataToUse[0][1].pair[0],
+            children: [
+              {
+                name: dataToUse[1][1].pair[0],
+                children: [
+                  {
+                    name: dataToUse[3][1].pair[0],
+                    children: [
+                      {
+                        name: dataToUse[7][1].pair[0],
+                      },
+                      { name: dataToUse[7][1].pair[1] },
+                    ],
+                  },
+                  {
+                    name: dataToUse[3][1].pair[1],
+                    children: [
+                      {
+                        name: dataToUse[8][1].pair[0],
+                      },
+                      { name: dataToUse[8][1].pair[1] },
+                    ],
+                  },
+                ],
+              },
+              {
+                name: dataToUse[1][1].pair[1],
+                children: [
+                  {
+                    name: dataToUse[4][1].pair[0],
+                    children: [
+                      {
+                        name: dataToUse[9][1].pair[0],
+                      },
+                      { name: dataToUse[9][1].pair[1] },
+                    ],
+                  },
+                  {
+                    name: dataToUse[4][1].pair[1],
+                    children: [
+                      {
+                        name: dataToUse[10][1].pair[0],
+                      },
+                      { name: dataToUse[10][1].pair[1] },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            name: dataToUse[0][1].pair[1],
+            children: [
+              {
+                name: dataToUse[2][1].pair[0],
+                children: [
+                  {
+                    name: dataToUse[5][1].pair[0],
+                    children: [
+                      {
+                        name: dataToUse[11][1].pair[0],
+                      },
+                      { name: dataToUse[11][1].pair[1] },
+                    ],
+                  },
+                  {
+                    name: dataToUse[5][1].pair[1],
+                    children: [
+                      {
+                        name: dataToUse[12][1].pair[0],
+                      },
+                      { name: dataToUse[12][1].pair[1] },
+                    ],
+                  },
+                ],
+              },
+              {
+                name: dataToUse[2][1].pair[1],
+                children: [
+                  {
+                    name: dataToUse[6][1].pair[0],
+                    children: [
+                      {
+                        name: dataToUse[13][1].pair[0],
+                      },
+                      { name: dataToUse[13][1].pair[1] },
+                    ],
+                  },
+                  {
+                    name: dataToUse[6][1].pair[1],
+                    children: [
+                      {
+                        name: dataToUse[14][1].pair[0],
+                      },
+                      { name: dataToUse[14][1].pair[1] },
+                    ],
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
     }
   }
   //#endregion Data Allocation
@@ -261,6 +369,114 @@ export default TreeDiagram;
 //         {
 //           name: dataToDisplay[2][1].pair[1],
 //           children: [{ name: dataToDisplay[6][1].pair[0] }, { name: dataToDisplay[6][1].pair[1] }],
+//         },
+//       ],
+//     },
+//   ],
+// };
+
+// const fifteenPairs = {
+//   name: treeDiagramName,
+//   children: [
+//     {
+//       name: dataToUse[0][1].pair[0],
+//       children: [
+//         {
+//           name: dataToUse[1][1].pair[0],
+//           children: [
+//             {
+//               name: dataToUse[3][1].pair[0],
+//               children: [
+//                 {
+//                   name: dataToUse[7][1].pair[0],
+//                 },
+//                 { name: dataToUse[7][1].pair[1] },
+//               ],
+//             },
+//             {
+//               name: dataToUse[3][1].pair[1],
+//               children: [
+//                 {
+//                   name: dataToUse[8][1].pair[0],
+//                 },
+//                 { name: dataToUse[8][1].pair[1] },
+//               ],
+//             },
+//           ],
+//         },
+//         {
+//           name: dataToUse[1][1].pair[1],
+//           children: [
+//             {
+//               name: dataToUse[4][1].pair[0],
+//               children: [
+//                 {
+//                   name: dataToUse[9][1].pair[0],
+//                 },
+//                 { name: dataToUse[9][1].pair[1] },
+//               ],
+//             },
+//             {
+//               name: dataToUse[4][1].pair[1],
+//               children: [
+//                 {
+//                   name: dataToUse[10][1].pair[0],
+//                 },
+//                 { name: dataToUse[10][1].pair[1] },
+//               ],
+//             },
+//           ],
+//         },
+//       ],
+//     },
+//     {
+//       name: dataToUse[0][1].pair[1],
+//       children: [
+//         {
+//           name: dataToUse[2][1].pair[0],
+//           children: [
+//             {
+//               name: dataToUse[5][1].pair[0],
+//               children: [
+//                 {
+//                   name: dataToUse[11][1].pair[0],
+//                 },
+//                 { name: dataToUse[11][1].pair[1] },
+//               ],
+//             },
+//             {
+//               name: dataToUse[5][1].pair[1],
+//               children: [
+//                 {
+//                   name: dataToUse[12][1].pair[0],
+//                 },
+//                 { name: dataToUse[12][1].pair[1] },
+//               ],
+//             },
+//           ],
+//         },
+//         {
+//           name: dataToUse[2][1].pair[1],
+//           children: [
+//             {
+//               name: dataToUse[6][1].pair[0],
+//               children: [
+//                 {
+//                   name: dataToUse[13][1].pair[0],
+//                 },
+//                 { name: dataToUse[13][1].pair[1] },
+//               ],
+//             },
+//             {
+//               name: dataToUse[6][1].pair[1],
+//               children: [
+//                 {
+//                   name: dataToUse[14][1].pair[0],
+//                 },
+//                 { name: dataToUse[14][1].pair[1] },
+//               ],
+//             },
+//           ],
 //         },
 //       ],
 //     },
