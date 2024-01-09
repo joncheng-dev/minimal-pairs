@@ -9,7 +9,7 @@ const containerStyles = {
 };
 
 function TreeDiagram(props) {
-  const { results } = props;
+  const { results, treeDiagramName } = props;
   const resultsToArray = Object.entries(results);
   console.log("TreeDiagram, resultsToArray: ", resultsToArray);
   const data = drawTree(resultsToArray);
@@ -18,12 +18,12 @@ function TreeDiagram(props) {
   function drawTree(dataToUse) {
     if (dataToUse.length === 1) {
       return {
-        name: "L vs R",
+        name: treeDiagramName,
         children: [{ name: dataToUse[0][1].pair[0] }, { name: dataToUse[0][1].pair[1] }],
       };
     } else if (dataToUse.length === 3) {
       return {
-        name: "L vs R",
+        name: treeDiagramName,
         children: [
           {
             name: dataToUse[0][1].pair[0],
@@ -37,7 +37,7 @@ function TreeDiagram(props) {
       };
     } else if (dataToUse.length === 7) {
       return {
-        name: "L vs R",
+        name: treeDiagramName,
         children: [
           {
             name: dataToUse[0][1].pair[0],

@@ -15,18 +15,23 @@ function Control() {
   // const [formVisible, setFormVisible] = useState(false);
   const [userQuery, setUserQuery] = useState(null);
   const [numPairsSelected, setNumPairsSelected] = useState(null);
+  const [treeDiagramName, setTreeDiagramName] = useState(null);
   const [resultsToUI, setResultsToUI] = useState(null);
 
   // Functions
   function concatenateUserInput(valueFromForm, valueFromForm2) {
     const query = valueFromForm.concat(valueFromForm2);
-    console.log("concatenateUserInput: ", query);
     setUserQuery(query);
+  }
+
+  function determineTreeDiagramName(valueFromForm, valueFromForm2) {
+    setTreeDiagramName(valueFromForm + " vs " + valueFromForm2);
   }
 
   // Populate variable userQuery with user form results
   function collectValuesFromForm(firstValue, secondValue, numberOfPairs) {
     concatenateUserInput(firstValue, secondValue);
+    determineTreeDiagramName(firstValue, secondValue);
     setNumPairsSelected(numberOfPairs);
   }
 
@@ -107,7 +112,7 @@ function Control() {
   return (
     <>
       <h2>Tree Diagram</h2>
-      {resultsToUI ? <TreeDiagram results={resultsToUI} /> : ""}
+      {resultsToUI ? <TreeDiagram results={resultsToUI} treeDiagramName={treeDiagramName} /> : ""}
       {resultsToUI ? <Results results={resultsToUI} /> : ""}
       <hr />
       {currentlyVisiblePage}
