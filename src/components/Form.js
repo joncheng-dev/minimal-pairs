@@ -25,6 +25,14 @@ function Form(props) {
     collectValuesFromForm(value1, value2, numPairsSelected);
   }
 
+  // const handleRedrawClick = () => {
+  //   let tempPlaceholder = null;
+  //   tempPlaceholder = numPairsSelected;
+  //   setNumPairsToShow(null);
+  //   setNumPairsToShow(tempPlaceholder);
+  //   collectValuesFromForm(value1, value2, numPairsSelected);
+  // };
+
   const handleChange1 = (event) => {
     setValue1(event.target.value);
     setSelectedOption1(event.target.value);

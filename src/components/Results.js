@@ -2,7 +2,7 @@ import React from "react";
 
 function Results(props) {
   const { results } = props;
-  console.log("results inside Results.js: ", results);
+  // console.log("results inside Results.js: ", results);
   return (
     <>
       <p>Results</p>

@@ -10,7 +10,7 @@ import TreeDiagram from "./TreeDiagram";
 
 function Control() {
   const arrayOfValues = ["B", "L", "R", "V"];
-  const arrayOfNumPairChoices = ["1", "2", "3", "4", "5"];
+  const arrayOfNumPairChoices = ["1", "2", "3", "4", "5", "6", "7"];
   // useState controls state
   // const [formVisible, setFormVisible] = useState(false);
   const [userQuery, setUserQuery] = useState(null);
@@ -78,6 +78,7 @@ function Control() {
   function filterDocResults(document, arrayOfSelectedIds) {
     const convertedArray = arrayOfSelectedIds.map(String);
     const docResultsToArray = Object.entries(document);
+    console.log("docResultsToArray: ", docResultsToArray);
     const filteredResults = docResultsToArray.filter((entry) => convertedArray.includes(entry[0]));
     const convertedBackToObj = Object.fromEntries(filteredResults);
     setResultsToUI(convertedBackToObj);
@@ -106,7 +107,7 @@ function Control() {
   return (
     <>
       <h2>Tree Diagram</h2>
-      <TreeDiagram />
+      {resultsToUI ? <TreeDiagram results={resultsToUI} /> : ""}
       {resultsToUI ? <Results results={resultsToUI} /> : ""}
       <hr />
       {currentlyVisiblePage}
