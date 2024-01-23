@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 function Form(props) {
-  const { dropDown1Options, collectValuesFromForm, numPairsOptions } = props;
+  const { dropDown1Options, collectValuesFromForm, numPairsOptions, gatherAndFilterResults } = props;
   const [value1, setValue1] = useState(null);
   const [value2, setValue2] = useState(null);
   const [dropDown2Visible, setDropDown2Visible] = useState(false);
@@ -23,6 +23,7 @@ function Form(props) {
     event.preventDefault();
     // console.log("value1, value2, numPairsSelected: ", value1, value2, numPairsSelected);
     collectValuesFromForm(value1, value2, numPairsSelected);
+    gatherAndFilterResults();
   }
 
   // const handleRedrawClick = () => {

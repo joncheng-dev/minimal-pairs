@@ -58,8 +58,8 @@ function Control() {
       if (docSnap.exists()) {
         // Before setting results to UI, randomly select and filter them.
         const arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, numPairsSelected);
-        console.log("arrayOfSelectedIds: ", arrayOfSelectedIds);
-        console.log("gatherAndFilterResults, docSnap.data(): ", docSnap.data());
+        // console.log("arrayOfSelectedIds: ", arrayOfSelectedIds);
+        // console.log("gatherAndFilterResults, docSnap.data(): ", docSnap.data());
         filterDocResults(docSnap.data(), arrayOfSelectedIds);
       } else {
         console.log("No such document. Reversing query!");
@@ -68,8 +68,8 @@ function Control() {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, numPairsSelected);
-          console.log("arrayOfSelectedIds: ", arrayOfSelectedIds);
-          console.log("gatherAndFilterResults, docSnap.data(): ", docSnap.data());
+          // console.log("arrayOfSelectedIds: ", arrayOfSelectedIds);
+          // console.log("gatherAndFilterResults, docSnap.data(): ", docSnap.data());
           filterDocResults(docSnap.data(), arrayOfSelectedIds);
         } else {
           console.log("No such document!");
@@ -129,7 +129,13 @@ function Control() {
       {resultsToUI ? <Results results={resultsToUI} /> : ""}
       <hr />
       {currentlyVisiblePage}
-      <Form dropDown1Options={arrayOfValues} numPairsOptions={arrayOfRowsToDisplay} collectValuesFromForm={collectValuesFromForm} />
+      {/* prettier-ignore */}
+      <Form
+        dropDown1Options={arrayOfValues}
+        numPairsOptions={arrayOfRowsToDisplay}
+        collectValuesFromForm={collectValuesFromForm}
+        gatherAndFilterResults={gatherAndFilterResults}
+      />
       <hr />
       {/* <p>First Value Selected:</p>
       {valueFromForm ? <p>{valueFromForm}</p> : <p>No 1st value selected</p>}
