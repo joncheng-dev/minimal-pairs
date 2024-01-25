@@ -4,26 +4,103 @@ import "../styles/tree-diagram.css";
 import { useCenteredTree } from "./TreeHelper";
 
 const containerStyles = {
-  width: "80vw",
+  width: "50vw",
   height: "50vh",
 };
 
 function TreeDiagram(props) {
-  const { results, treeDiagramName } = props;
+  const { results, treeDiagramName, userQuery } = props;
   const resultsToArray = Object.entries(results);
   console.log("TreeDiagram, resultsToArray: ", resultsToArray);
-  const data = drawTree(resultsToArray);
+  const data = drawTree(resultsToArray, treeDiagramName);
+  // const data = testTree(2);
+  // console.log(data);
+  console.log(count(5));
+
+  function count(number) {
+    if (number === 0) {
+      return `${number}\n`;
+    } else {
+      return count(number - 1);
+    }
+  }
+
+  function testTree(number) {
+    if (number === 1) {
+      return {
+        name: number,
+      };
+    } else {
+      testTree(number - 1);
+    }
+  }
+
+  // Tree with 1 pair
+  const onePairTree = {
+    name: 0,
+    children: [{ name: 1 }, { name: 1 }],
+  };
+
+  // Tree with 3 pairs
+  const threePairsTree = {
+    name: 0,
+    children: [
+      {
+        name: 1,
+        children: [{ name: 2 }, { name: 2 }],
+      },
+      {
+        name: 1,
+        children: [{ name: 3 }, { name: 3 }],
+      },
+    ],
+  };
+
+  // Three with 7 pairs
+  const sevenPairsTree = {
+    name: 0,
+    children: [
+      {
+        name: 1,
+        children: [
+          {
+            name: 2,
+            children: [{ name: 4 }, { name: 4 }],
+          },
+          {
+            name: 2,
+            children: [{ name: 5 }, { name: 5 }],
+          },
+        ],
+      },
+      {
+        name: 1,
+        children: [
+          {
+            name: 3,
+            children: [{ name: 6 }, { name: 6 }],
+          },
+          {
+            name: 3,
+            children: [{ name: 7 }, { name: 7 }],
+          },
+        ],
+      },
+    ],
+  };
 
   //#region Data Allocation
-  function drawTree(dataToUse) {
+  function drawTree(dataToUse, title) {
+    console.log("TreeDiagram, drawTree, dataToUse: ", dataToUse);
     if (dataToUse.length === 1) {
+      console.log("TreeDiagram, drawTree, dataToUse[0][1]: ", dataToUse[0][1]);
       return {
-        name: treeDiagramName,
+        name: title,
         children: [{ name: dataToUse[0][1].pair[0] }, { name: dataToUse[0][1].pair[1] }],
       };
     } else if (dataToUse.length === 3) {
       return {
-        name: treeDiagramName,
+        name: title,
         children: [
           {
             name: dataToUse[0][1].pair[0],
@@ -37,7 +114,7 @@ function TreeDiagram(props) {
       };
     } else if (dataToUse.length === 7) {
       return {
-        name: treeDiagramName,
+        name: title,
         children: [
           {
             name: dataToUse[0][1].pair[0],
@@ -69,7 +146,7 @@ function TreeDiagram(props) {
       };
     } else if (dataToUse.length === 15) {
       return {
-        name: treeDiagramName,
+        name: title,
         children: [
           {
             name: dataToUse[0][1].pair[0],

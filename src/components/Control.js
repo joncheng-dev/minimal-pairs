@@ -125,7 +125,7 @@ function Control() {
   return (
     <>
       <h2>Tree Diagram</h2>
-      {resultsToUI ? <TreeDiagram results={resultsToUI} treeDiagramName={treeDiagramName} /> : ""}
+      {resultsToUI ? <TreeDiagram userQuery={userQuery} results={resultsToUI} treeDiagramName={treeDiagramName} /> : ""}
       {resultsToUI ? <Results results={resultsToUI} /> : ""}
       <hr />
       {currentlyVisiblePage}
