@@ -7,6 +7,7 @@ import { doc, getDoc } from "firebase/firestore";
 import db from "./../firebase";
 import Results from "./Results";
 import TreeDiagram from "./TreeDiagram";
+import TreeDiagramExpt from "./TreeDiagramExpt";
 
 function Control() {
   const arrayOfValues = ["B", "L", "R", "V"];
@@ -52,10 +53,11 @@ function Control() {
   async function gatherAndFilterResults() {
     if (userQuery !== null) {
       console.log("queryFirebaseDocs triggered, userQuery: ", userQuery);
-      const docRef = doc(db, "consonant-pairs", userQuery);
+      const docRef = doc(db, "consonant-pairs-expt", userQuery);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
+        console.log("Control, gatherAndFilterResults, docSnap: ", docSnap.data());
         // Before setting results to UI, randomly select and filter them.
         const arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, numPairsSelected);
         // console.log("arrayOfSelectedIds: ", arrayOfSelectedIds);
@@ -64,7 +66,7 @@ function Control() {
       } else {
         console.log("No such document. Reversing query!");
         const reversedQuery = userQuery.split("").reduce((accumulator, char) => char + accumulator, "");
-        const docRef = doc(db, "consonant-pairs", reversedQuery);
+        const docRef = doc(db, "consonant-pairs-expt", reversedQuery);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, numPairsSelected);
@@ -92,13 +94,20 @@ function Control() {
 
   // Now that we have an array of random Ids..
   // Use this to filter the document
+  // function filterDocResults(document, arrayOfSelectedIds) {
+  //   const convertedArray = arrayOfSelectedIds.map(String);
+  //   const docResultsToArray = Object.entries(document);
+  //   console.log("docResultsToArray: ", docResultsToArray);
+  //   const filteredResults = docResultsToArray.filter((entry) => convertedArray.includes(entry[0]));
+  //   const convertedBackToObj = Object.fromEntries(filteredResults);
+  //   setResultsToUI(convertedBackToObj);
+  // }
   function filterDocResults(document, arrayOfSelectedIds) {
     const convertedArray = arrayOfSelectedIds.map(String);
-    const docResultsToArray = Object.entries(document);
-    console.log("docResultsToArray: ", docResultsToArray);
-    const filteredResults = docResultsToArray.filter((entry) => convertedArray.includes(entry[0]));
-    const convertedBackToObj = Object.fromEntries(filteredResults);
-    setResultsToUI(convertedBackToObj);
+    console.log("Control, filterDocResults, arrayOfSelectedIds: ", arrayOfSelectedIds);
+    const filteredResults = Object.fromEntries(Object.entries(document).filter(([key]) => convertedArray.includes(String(key))));
+    console.log("Control, filterDocResults, filteredResults: ", filteredResults);
+    setResultsToUI(filteredResults);
   }
 
   useEffect(() => {
@@ -125,7 +134,7 @@ function Control() {
   return (
     <>
       <h2>Tree Diagram</h2>
-      {resultsToUI ? <TreeDiagram userQuery={userQuery} results={resultsToUI} treeDiagramName={treeDiagramName} /> : ""}
+      {resultsToUI ? <TreeDiagramExpt userQuery={userQuery} results={resultsToUI} treeDiagramName={treeDiagramName} /> : ""}
       {resultsToUI ? <Results results={resultsToUI} /> : ""}
       <hr />
       {currentlyVisiblePage}
