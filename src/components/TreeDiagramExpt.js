@@ -8,6 +8,19 @@ const containerStyles = {
   height: "50vh",
 };
 
+const drawTree = (title, ...childrenWords) => {
+  const node = {
+    name: title,
+    children: [],
+  };
+
+  for (const word of childrenWords) {
+    node.children.push({ name: word }, { name: word });
+  }
+
+  return node;
+};
+
 const drawTop = (title, wordOne, wordTwo) => {
   return {
     name: title,
@@ -30,6 +43,8 @@ const drawTopWhenSecondRowPresent = (title, wordOne, wordTwo, children) => {
 //     children: [{ name: firstWord }, { name: secondWord }],
 //   };
 // };
+const data = drawTree("Root", "Child1", "Child2", "Child3");
+
 const drawSecondRow = (firstWord, secondWord) => {
   return [{ name: firstWord }, { name: secondWord }];
 };
@@ -40,7 +55,7 @@ function TreeDiagramExpt(props) {
   const [rowOne, setRowOne] = useState([]);
   const [rowTwo, setRowTwo] = useState([]);
   const [children, setChildren] = useState([]);
-  const [data, setData] = useState({});
+  // const [data, setData] = useState({});
 
   useEffect(() => {
     arrayToRows();
@@ -51,10 +66,10 @@ function TreeDiagramExpt(props) {
     setChildren([drawSecondRow(rowTwo[0], rowTwo[1]), drawSecondRow(rowTwo[2], rowTwo[3])]);
   }, [rowOne]);
 
-  useEffect(() => {
-    console.log("TreeDiagramExpt, children: ", children);
-    setData(drawTopWhenSecondRowPresent(treeDiagramName, rowOne[0], rowOne[1], children));
-  }, [children]);
+  // useEffect(() => {
+  //   console.log("TreeDiagramExpt, children: ", children);
+  //   setData(drawTopWhenSecondRowPresent(treeDiagramName, rowOne[0], rowOne[1], children));
+  // }, [children]);
 
   useEffect(() => {
     // console.log("TreeDiagramExpt, children2: ", children2);
