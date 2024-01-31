@@ -8,15 +8,37 @@ const containerStyles = {
   height: "50vh",
 };
 
-const drawTree = (title, ...childrenWords) => {
+const drawTree = (title, childrenWords) => {
+  const node = {
+    name: title,
+    children: [],
+  };
+  for (let i = 0; i < childrenWords.length; i += 2) {
+    node.children.push({ name: childrenWords[i] }, { name: childrenWords[i + 1] });
+  }
+
+  return node;
+};
+
+const drawBinaryTree = (title, childrenWords) => {
   const node = {
     name: title,
     children: [],
   };
 
-  for (const word of childrenWords) {
-    node.children.push({ name: word }, { name: word });
-  }
+  const buildBinaryTree = (parentNode, index) => {
+    if (index < childrenWords.length) {
+      const leftChild = { name: childrenWords[index], children: [] };
+      const rightChild = { name: childrenWords[index + 1], children: [] };
+
+      parentNode.children.push(leftChild, rightChild);
+
+      buildBinaryTree(leftChild, 2 * index + 2); // Left child
+      buildBinaryTree(rightChild, 2 * index + 4); // Right child
+    }
+  };
+
+  buildBinaryTree(node, 0); // Start building from the root
 
   return node;
 };
@@ -43,7 +65,40 @@ const drawTopWhenSecondRowPresent = (title, wordOne, wordTwo, children) => {
 //     children: [{ name: firstWord }, { name: secondWord }],
 //   };
 // };
-const data = drawTree("Root", "Child1", "Child2", "Child3");
+const sampleData = ["light", "right", "collect", "correct", "airless", "heiress", "clamour", "crammer"];
+// const sampleData = [
+//   "one",
+//   "two",
+//   "three",
+//   "four",
+//   "five",
+//   "six",
+//   "7",
+//   "8",
+//   "9",
+//   "10",
+//   "11",
+//   "12",
+//   "13",
+//   "14",
+//   "15",
+//   "16",
+//   "17",
+//   "18",
+//   "19",
+//   "20",
+//   "21",
+//   "22",
+//   "23",
+//   "24",
+//   "25",
+//   "26",
+//   "27",
+//   "28",
+//   "29",
+//   "30",
+// ];
+const data = drawBinaryTree("Root", sampleData);
 
 const drawSecondRow = (firstWord, secondWord) => {
   return [{ name: firstWord }, { name: secondWord }];
