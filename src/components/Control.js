@@ -16,12 +16,15 @@ export default function Control() {
   // Change UI form to show
 
   // TODO expand upon this array of characters to choose from.
-  // First, need to add some values to database
+  // 1. Toggle consonants or vowels
+  // 2. Expand upon list of values
   const arrayOfValues = ["B", "L", "R", "V"];
-  // 1 row is 1 pair, 2 rows is 3 pairs, 3 rows is 7 pairs, 4 rows is 15 pairs
+  // 1 row is 1 pair,
+  // 2 rows is 3 pairs,
+  // 3 rows is 7 pairs,
+  // 4 rows is 15 pairs
   const arrayOfRowsToDisplay = ["1", "2", "3", "4"];
-  // useState controls state
-  // const [formVisible, setFormVisible] = useState(false);
+
   const [userQuery, setUserQuery] = useState(null);
   const [numPairsSelected, setNumPairsSelected] = useState(null);
   const [treeDiagramName, setTreeDiagramName] = useState(null);
@@ -54,6 +57,7 @@ export default function Control() {
 
   async function gatherAndFilterResults() {
     if (userQuery !== null) {
+      // Add option of consonants or vowels -- currently only consonants
       const docRef = doc(db, "consonant-pairs-expt", userQuery);
       const docSnap = await getDoc(docRef);
 
@@ -85,8 +89,7 @@ export default function Control() {
     return ans;
   }
 
-  // Now that we have an array of random Ids..
-  // Use this to filter the document
+  // Use this to filter the document using randomized values
   function filterDocResults(document, arrayOfSelectedIds) {
     const convertedArray = arrayOfSelectedIds.map(String);
     const filteredResults = Object.fromEntries(Object.entries(document).filter(([key]) => convertedArray.includes(String(key))));
@@ -96,8 +99,6 @@ export default function Control() {
   useEffect(() => {
     gatherAndFilterResults();
   }, [userQuery, numPairsSelected]);
-
-  let currentlyVisiblePage = null;
 
   return (
     <>
