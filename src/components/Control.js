@@ -8,29 +8,31 @@ import db from "./../firebase";
 import Results from "./Results";
 import TreeDiagram from "./TreeDiagram";
 import TreeDiagramExpt from "./TreeDiagramExpt";
+import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@mui/material";
 
 export default function Control() {
-  // WIP:
-  // Allow user to choose "consonant-pairs" or "vowels-diphthongs"
-  // Display up to 15 results.
-  // Change UI form to show
+  const [queryCategory, setQueryCategory] = useState("consonant-pairs-expt");
 
   // TODO expand upon this array of characters to choose from.
-  // 1. Toggle consonants or vowels
   // 2. Expand upon list of values
-  const arrayOfValues = ["B", "L", "R", "V"];
-  // 1 row is 1 pair,
-  // 2 rows is 3 pairs,
-  // 3 rows is 7 pairs,
-  // 4 rows is 15 pairs
+  const vowelCharList = ["A", "E", "I", "U"];
+  const consonantCharList = ["B", "L", "R", "V"];
   const arrayOfRowsToDisplay = ["1", "2", "3", "4"];
-
+  // TODO refactor to allow any numbers of pairs up to 15 pairs maximum?
+  // 1 row is 1 pair of words,
+  // 2 rows is 3 pairs of words,
+  // 3 rows is 7 pairs of words,
+  // 4 rows is 15 pairs of words
   const [userQuery, setUserQuery] = useState(null);
   const [numPairsSelected, setNumPairsSelected] = useState(null);
   const [treeDiagramName, setTreeDiagramName] = useState(null);
   const [resultsToUI, setResultsToUI] = useState(null);
 
   // Functions
+  const handleCategoryChange = (event) => {
+    setQueryCategory(event.target.value);
+  };
+
   function concatenateUserInput(valueFromForm, valueFromForm2) {
     const query = valueFromForm.concat(valueFromForm2);
     setUserQuery(query);
@@ -58,7 +60,7 @@ export default function Control() {
   async function gatherAndFilterResults() {
     if (userQuery !== null) {
       // Add option of consonants or vowels -- currently only consonants
-      const docRef = doc(db, "consonant-pairs-expt", userQuery);
+      const docRef = doc(db, queryCategory, userQuery);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -67,7 +69,7 @@ export default function Control() {
         filterDocResults(docSnap.data(), arrayOfSelectedIds);
       } else {
         const reversedQuery = userQuery.split("").reduce((accumulator, char) => char + accumulator, "");
-        const docRef = doc(db, "consonant-pairs-expt", reversedQuery);
+        const docRef = doc(db, queryCategory, reversedQuery);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, numPairsSelected);
@@ -106,10 +108,16 @@ export default function Control() {
       {resultsToUI ? <TreeDiagramExpt userQuery={userQuery} results={resultsToUI} treeDiagramName={treeDiagramName} /> : ""}
       {resultsToUI ? <Results results={resultsToUI} /> : ""}
       <hr />
-      {currentlyVisiblePage}
+      <FormControl>
+        <FormLabel>Category</FormLabel>
+        <RadioGroup row value={queryCategory} onChange={handleCategoryChange}>
+          <FormControlLabel value="consonant-pairs-expt" control={<Radio />} label="Consonants" />
+          <FormControlLabel value="vowel-diphthong-pairs-expt" control={<Radio />} label="Vowels" />
+        </RadioGroup>
+      </FormControl>
       {/* prettier-ignore */}
       <Form
-        dropDown1Options={arrayOfValues}
+        dropDown1Options={queryCategory === "consonant-pairs-expt" ? consonantCharList : vowelCharList}
         numPairsOptions={arrayOfRowsToDisplay}
         collectValuesFromForm={collectValuesFromForm}
         gatherAndFilterResults={gatherAndFilterResults}
