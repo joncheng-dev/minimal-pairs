@@ -1,74 +1,69 @@
 import React, { useState, useEffect } from "react";
+import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@mui/material";
+import { Checkbox, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 
-function Form(props) {
-  const { dropDown1Options, collectValuesFromForm, numPairsOptions, gatherAndFilterResults } = props;
-  const [value1, setValue1] = useState(null);
-  const [value2, setValue2] = useState(null);
-  const [dropDown2Visible, setDropDown2Visible] = useState(false);
-  const [dropDown2Options, setDropDown2Options] = useState(dropDown1Options);
+// Style
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+export default function Form(props) {
+  const { collectValuesFromForm, gatherAndFilterResults } = props;
+  // Try putting these values inherently in the Form component rather than parent
+  const consonantCharList = ["B", "L", "R", "V"];
+  const vowelCharList = ["A", "E", "I", "U"];
+  const arrayOfRowsToDisplay = ["1", "2", "3", "4"];
+
+  // useState
+  const [queryCategory, setQueryCategory] = useState("consonant-pairs-expt");
+  const [dropDown1Options, setDropDown1Options] = useState(consonantCharList);
+  const [charValues, setCharValues] = useState(null);
   const [numPairsSelected, setNumPairsToShow] = useState(null);
-  const [selectedOption1, setSelectedOption1] = useState("(make a selection)");
-  const [selectedOption2, setSelectedOption2] = useState("(make a selection)");
-
-  useEffect(() => {
-    // console.log("value 1 has been selected: ", value1);
-    const filteredOptions = dropDown1Options.filter((entries) => entries !== value1);
-    setDropDown2Options(filteredOptions);
-    if (value1 !== null) {
-      setDropDown2Visible(true);
-    }
-  }, [value1]);
 
   function onFormSubmission(event) {
     event.preventDefault();
-    // console.log("value1, value2, numPairsSelected: ", value1, value2, numPairsSelected);
-    collectValuesFromForm(value1, value2, numPairsSelected);
+    collectValuesFromForm(value, numPairsSelected);
     gatherAndFilterResults();
   }
 
-  // const handleRedrawClick = () => {
-  //   let tempPlaceholder = null;
-  //   tempPlaceholder = numPairsSelected;
-  //   setNumPairsToShow(null);
-  //   setNumPairsToShow(tempPlaceholder);
-  //   collectValuesFromForm(value1, value2, numPairsSelected);
-  // };
-
-  const handleChange1 = (event) => {
-    setValue1(event.target.value);
+  const handleCharChange = (event) => {
+    setCharValues(event.target.value);
     setSelectedOption1(event.target.value);
-  };
-
-  const handleChange2 = (event) => {
-    setValue2(event.target.value);
-    setSelectedOption2(event.target.value);
   };
 
   return (
     <>
-      <h2>Form</h2>
-      <form onSubmit={onFormSubmission}>
-        {/* First Dropdown Menu */}
-        <select value={selectedOption1} onChange={handleChange1}>
-          <option value={"(make a selection)"}>(make a selection)</option>
-          {dropDown1Options.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-        {/* Second Dropdown Menu */}
-        {dropDown2Visible && (
-          <select value={selectedOption2} onChange={handleChange2}>
-            <option value={"(make a selection)"}>(make a selection)</option>
-            {dropDown2Options.map((option, index) => (
-              <option key={index} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        )}
+      <FormControl onSubmit={onFormSubmission} sx={{ m: 1, width: 300 }}>
+        <h2>Form</h2>
+        <FormLabel>Category</FormLabel>
+        <RadioGroup row value={queryCategory} onChange={handleCategoryChange}>
+          <FormControlLabel value="consonant-pairs-expt" control={<Radio />} label="Consonants" />
+          <FormControlLabel value="vowel-diphthong-pairs-expt" control={<Radio />} label="Vowels" />
+        </RadioGroup>
         <hr />
+        <InputLabel>Characters</InputLabel>
+        <Select
+          multiple
+          value={charValues}
+          onChange={handleCharChange}
+          input={<OutlinedInput label="Characters" />}
+          renderValue={(selected) => selected.join(", ")}
+          MenuProps={MenuProps}
+        >
+          {dropDown1Options.map((char) => (
+            <MenuItem key={char} value={char}>
+              <Checkbox checked={charValues.indexOf(char) > -1} />
+              <ListItemText primary={char} />
+            </MenuItem>
+          ))}
+        </Select>
         <br />
         <p>Select the number of rows you'd like to view</p>
         <select defaultValue={"(make a selection)"} onChange={(event) => setNumPairsToShow(event.target.value)}>
@@ -82,12 +77,10 @@ function Form(props) {
         <br />
         <br />
         <button type="submit">Submit Selection</button>
-      </form>
+      </FormControl>
     </>
   );
 }
-
-export default Form;
 
 // import React, { useState } from "react";
 // import Box from "@mui/material/Box";
