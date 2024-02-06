@@ -21,51 +21,73 @@ export default function Form(props) {
   const vowelCharList = ["A", "E", "I", "U"];
   const arrayOfRowsToDisplay = ["1", "2", "3", "4"];
 
-  // useState
-  const [queryCategory, setQueryCategory] = useState("consonant-pairs-expt");
+  // Which is selected, consonants or vowels?
+  const [charCategory, setCharCategory] = useState("consonant-pairs-expt");
+  // Decides what characters to show to user in dropdown select.
   const [dropDown1Options, setDropDown1Options] = useState(consonantCharList);
-  const [charValues, setCharValues] = useState(null);
-  const [numPairsSelected, setNumPairsToShow] = useState(null);
+  // Grabs values user selected
+  const [userSelectedChars, setUserSelectedChars] = useState([]);
+  // How many pairs should be shown in results tree?
+  const [numPairsToShow, setNumPairsToShow] = useState(null);
 
+  // Function sending information back to Control
   function onFormSubmission(event) {
     event.preventDefault();
-    collectValuesFromForm(value, numPairsSelected);
-    gatherAndFilterResults();
+    console.log("onFormSubmission, form has been submitted");
+    // collectValuesFromForm(charCategory, userSelectedChars, numPairsToShow);
+    // gatherAndFilterResults();
   }
 
-  const handleCharChange = (event) => {
-    setCharValues(event.target.value);
-    setSelectedOption1(event.target.value);
+  useEffect(() => {
+    // Sets dropdown select options -- Does this if charCategory changes
+    if (charCategory === "consonant-pairs-expt") {
+      console.log("Form, charCategory changed, drop down -> should be consonantCharList: ", charCategory);
+      setDropDown1Options(consonantCharList);
+      setUserSelectedChars([]);
+    } else {
+      console.log("Form, charCategory changed, drop down -> should be vowelCharList: ", charCategory);
+      setDropDown1Options(vowelCharList);
+      setUserSelectedChars([]);
+    }
+  }, [charCategory]);
+
+  const handleDropDownChange = (event) => {
+    const {
+      target: { value },
+    } = event;
+    setUserSelectedChars(typeof value === "string" ? value.split(",") : value);
   };
 
   return (
     <>
+      <h2>Form</h2>
       <FormControl onSubmit={onFormSubmission} sx={{ m: 1, width: 300 }}>
-        <h2>Form</h2>
         <FormLabel>Category</FormLabel>
-        <RadioGroup row value={queryCategory} onChange={handleCategoryChange}>
+        <RadioGroup row value={charCategory} onChange={(event) => setCharCategory(event.target.value)}>
           <FormControlLabel value="consonant-pairs-expt" control={<Radio />} label="Consonants" />
           <FormControlLabel value="vowel-diphthong-pairs-expt" control={<Radio />} label="Vowels" />
         </RadioGroup>
         <hr />
-        <InputLabel>Characters</InputLabel>
+        <InputLabel id="multiple-checkbox-label">Characters</InputLabel>
         <Select
+          labelId="multiple-checkbox-label"
+          id="multiple-checkbox-label"
           multiple
-          value={charValues}
-          onChange={handleCharChange}
+          value={userSelectedChars}
+          onChange={handleDropDownChange}
           input={<OutlinedInput label="Characters" />}
           renderValue={(selected) => selected.join(", ")}
           MenuProps={MenuProps}
         >
           {dropDown1Options.map((char) => (
             <MenuItem key={char} value={char}>
-              <Checkbox checked={charValues.indexOf(char) > -1} />
+              <Checkbox checked={userSelectedChars.indexOf(char) > -1} />
               <ListItemText primary={char} />
             </MenuItem>
           ))}
         </Select>
         <br />
-        <p>Select the number of rows you'd like to view</p>
+        {/* <p>Select the number of rows you'd like to view</p>
         <select defaultValue={"(make a selection)"} onChange={(event) => setNumPairsToShow(event.target.value)}>
           <option value={"(make a selection)"}>(make a selection)</option>
           {numPairsOptions.map((option, index) => (
@@ -75,7 +97,7 @@ export default function Form(props) {
           ))}
         </select>
         <br />
-        <br />
+        <br /> */}
         <button type="submit">Submit Selection</button>
       </FormControl>
     </>
