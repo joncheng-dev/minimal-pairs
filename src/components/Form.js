@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel } from "@mui/material";
-import { Checkbox, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { Radio, RadioGroup, FormControlLabel, FormControl, FormGroup, FormLabel } from "@mui/material";
+import { Box, Button, Checkbox, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 
 // Style
 const ITEM_HEIGHT = 48;
@@ -19,7 +19,7 @@ export default function Form(props) {
   // Try putting these values inherently in the Form component rather than parent
   const consonantCharList = ["B", "L", "R", "V"];
   const vowelCharList = ["A", "E", "I", "U"];
-  const arrayOfRowsToDisplay = ["1", "2", "3", "4"];
+  const arrayOfRowsToDisplay = ["(make a selection)", "1", "2", "3", "4"];
 
   // Which is selected, consonants or vowels?
   const [charCategory, setCharCategory] = useState("consonant-pairs-expt");
@@ -28,12 +28,16 @@ export default function Form(props) {
   // Grabs values user selected
   const [userSelectedChars, setUserSelectedChars] = useState([]);
   // How many pairs should be shown in results tree?
-  const [numPairsToShow, setNumPairsToShow] = useState(null);
+  const [numPairsToShow, setNumPairsToShow] = useState("(make a selection)");
 
   // Function sending information back to Control
   function onFormSubmission(event) {
     event.preventDefault();
     console.log("onFormSubmission, form has been submitted");
+    console.log("onFormSubmission, charCategory: ", charCategory);
+    console.log("onFormSubmission, userSelectedChars: ", userSelectedChars);
+    console.log("onFormSubmission, numPairsToShow: ", numPairsToShow);
+
     // collectValuesFromForm(charCategory, userSelectedChars, numPairsToShow);
     // gatherAndFilterResults();
   }
@@ -44,10 +48,12 @@ export default function Form(props) {
       console.log("Form, charCategory changed, drop down -> should be consonantCharList: ", charCategory);
       setDropDown1Options(consonantCharList);
       setUserSelectedChars([]);
+      setNumPairsToShow("(make a selection)");
     } else {
       console.log("Form, charCategory changed, drop down -> should be vowelCharList: ", charCategory);
       setDropDown1Options(vowelCharList);
       setUserSelectedChars([]);
+      setNumPairsToShow("(make a selection)");
     }
   }, [charCategory]);
 
@@ -55,51 +61,62 @@ export default function Form(props) {
     const {
       target: { value },
     } = event;
+    console.log("Form, handleDropDownChange, value: ", value);
     setUserSelectedChars(typeof value === "string" ? value.split(",") : value);
   };
 
   return (
     <>
       <h2>Form</h2>
-      <FormControl onSubmit={onFormSubmission} sx={{ m: 1, width: 300 }}>
-        <FormLabel>Category</FormLabel>
-        <RadioGroup row value={charCategory} onChange={(event) => setCharCategory(event.target.value)}>
-          <FormControlLabel value="consonant-pairs-expt" control={<Radio />} label="Consonants" />
-          <FormControlLabel value="vowel-diphthong-pairs-expt" control={<Radio />} label="Vowels" />
-        </RadioGroup>
-        <hr />
-        <InputLabel id="multiple-checkbox-label">Characters</InputLabel>
-        <Select
-          labelId="multiple-checkbox-label"
-          id="multiple-checkbox-label"
-          multiple
-          value={userSelectedChars}
-          onChange={handleDropDownChange}
-          input={<OutlinedInput label="Characters" />}
-          renderValue={(selected) => selected.join(", ")}
-          MenuProps={MenuProps}
-        >
-          {dropDown1Options.map((char) => (
-            <MenuItem key={char} value={char}>
-              <Checkbox checked={userSelectedChars.indexOf(char) > -1} />
-              <ListItemText primary={char} />
-            </MenuItem>
-          ))}
-        </Select>
+      <Box component="form" onSubmit={onFormSubmission}>
+        <FormControl sx={{ m: 1, width: 300 }}>
+          <FormLabel>Category</FormLabel>
+          <RadioGroup row value={charCategory} onChange={(event) => setCharCategory(event.target.value)}>
+            <FormControlLabel value="consonant-pairs-expt" control={<Radio />} label="Consonants" />
+            <FormControlLabel value="vowel-diphthong-pairs-expt" control={<Radio />} label="Vowels" />
+          </RadioGroup>
+          <br />
+          {/* <InputLabel id="multiple-checkbox-label">Characters</InputLabel> */}
+          <Select
+            labelId="multiple-checkbox-label"
+            id="multiple-checkbox-label"
+            multiple
+            value={userSelectedChars}
+            onChange={handleDropDownChange}
+            input={<OutlinedInput label="Characters" />}
+            renderValue={(selected) => selected.join(", ")}
+            MenuProps={MenuProps}
+          >
+            {dropDown1Options.map((char) => (
+              <MenuItem key={char} value={char}>
+                <Checkbox checked={userSelectedChars.indexOf(char) > -1} />
+                <ListItemText primary={char} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <br />
-        {/* <p>Select the number of rows you'd like to view</p>
-        <select defaultValue={"(make a selection)"} onChange={(event) => setNumPairsToShow(event.target.value)}>
-          <option value={"(make a selection)"}>(make a selection)</option>
-          {numPairsOptions.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+        <InputLabel>Select the number of rows you'd like to view</InputLabel>
+        <FormControl sx={{ m: 1, width: 300 }}>
+          <Select
+            defaultValue={"(make a selection)"}
+            value={numPairsToShow}
+            label="Number of rows"
+            onChange={(event) => setNumPairsToShow(event.target.value)}
+          >
+            {arrayOfRowsToDisplay.map((option, index) => (
+              <MenuItem key={index} value={option}>
+                {option}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <br />
-        <br /> */}
-        <button type="submit">Submit Selection</button>
-      </FormControl>
+        <br />
+        <Button type="submit" variant="contained" sx={{ m: 1, width: 300 }}>
+          Submit
+        </Button>
+      </Box>
     </>
   );
 }
