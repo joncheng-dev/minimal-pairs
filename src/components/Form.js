@@ -18,7 +18,7 @@ export default function Form(props) {
   const { collectValuesFromForm, gatherAndFilterResults } = props;
   // Try putting these values inherently in the Form component rather than parent
   const consonantCharList = ["B", "L", "R", "V"];
-  const vowelCharList = ["A", "E", "I", "U"];
+  const vowelCharList = ["A", "E", "I", "U", "\u026A"];
   const arrayOfRowsToDisplay = ["(make a selection)", "1", "2", "3", "4"];
 
   // Which is selected, consonants or vowels?
@@ -28,7 +28,7 @@ export default function Form(props) {
   // Grabs values user selected
   const [userSelectedChars, setUserSelectedChars] = useState([]);
   // How many pairs should be shown in results tree?
-  const [numPairsToShow, setNumPairsToShow] = useState("(make a selection)");
+  const [numRowsToShow, setNumRowsToShow] = useState("(make a selection)");
 
   // Function sending information back to Control
   function onFormSubmission(event) {
@@ -36,10 +36,10 @@ export default function Form(props) {
     console.log("onFormSubmission, form has been submitted");
     console.log("onFormSubmission, charCategory: ", charCategory);
     console.log("onFormSubmission, userSelectedChars: ", userSelectedChars);
-    console.log("onFormSubmission, numPairsToShow: ", numPairsToShow);
+    console.log("onFormSubmission, numRowsToShow: ", numRowsToShow);
 
-    // collectValuesFromForm(charCategory, userSelectedChars, numPairsToShow);
-    // gatherAndFilterResults();
+    collectValuesFromForm(charCategory, userSelectedChars, numRowsToShow);
+    gatherAndFilterResults();
   }
 
   useEffect(() => {
@@ -48,12 +48,12 @@ export default function Form(props) {
       console.log("Form, charCategory changed, drop down -> should be consonantCharList: ", charCategory);
       setDropDown1Options(consonantCharList);
       setUserSelectedChars([]);
-      setNumPairsToShow("(make a selection)");
+      setNumRowsToShow("(make a selection)");
     } else {
       console.log("Form, charCategory changed, drop down -> should be vowelCharList: ", charCategory);
       setDropDown1Options(vowelCharList);
       setUserSelectedChars([]);
-      setNumPairsToShow("(make a selection)");
+      setNumRowsToShow("(make a selection)");
     }
   }, [charCategory]);
 
@@ -100,9 +100,9 @@ export default function Form(props) {
         <FormControl sx={{ m: 1, width: 300 }}>
           <Select
             defaultValue={"(make a selection)"}
-            value={numPairsToShow}
+            value={numRowsToShow}
             label="Number of rows"
-            onChange={(event) => setNumPairsToShow(event.target.value)}
+            onChange={(event) => setNumRowsToShow(event.target.value)}
           >
             {arrayOfRowsToDisplay.map((option, index) => (
               <MenuItem key={index} value={option}>

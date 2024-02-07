@@ -13,67 +13,72 @@ export default function Control() {
   // TODO expand upon this array of characters to choose from.
   // 2. Expand upon list of values
   // const vowelCharList = ["A", "E", "I", "U", "\u026A"];
-  // const vowelCharList = ["A", "E", "I", "U"];
-  // const consonantCharList = ["B", "L", "R", "V"];
   // const arrayOfRowsToDisplay = ["1", "2", "3", "4"];
   // TODO refactor to allow any numbers of pairs up to 15 pairs maximum?
   // 1 row is 1 pair of words,
   // 2 rows is 3 pairs of words,
   // 3 rows is 7 pairs of words,
   // 4 rows is 15 pairs of words
+  const [category, setCategory] = useState(null);
   const [userQuery, setUserQuery] = useState(null);
   const [treeDiagramName, setTreeDiagramName] = useState(null);
+  const [numPairsInTree, setNumPairsInTree] = useState(null);
   const [resultsToUI, setResultsToUI] = useState(null);
 
   // Functions
-  function concatenateUserInput(valueFromForm, valueFromForm2) {
-    const query = valueFromForm.concat(valueFromForm2);
-    console.log("Control, concatenateUserInput, query: ", query);
-    setUserQuery(query);
+  function concatenateUserInput(stringsArray) {
+    const searchString = stringsArray.join("");
+    console.log("Control, concatenateUserInput, searchString: ", searchString);
+    setUserQuery(searchString);
   }
 
-  function determineTreeDiagramName(valueFromForm, valueFromForm2) {
-    setTreeDiagramName(valueFromForm + " vs " + valueFromForm2);
+  function determineTreeDiagramName(values) {
+    setTreeDiagramName(values[0] + " vs " + values[1]);
   }
 
-  // // Populate variable userQuery with user form results
-  // function collectValuesFromForm(value, numberOfRows) {
-  //   concatenateUserInput(firstValue, secondValue);
-  //   determineTreeDiagramName(firstValue, secondValue);
-  //   if (numberOfRows === "1") {
-  //     setNumPairsSelected(1);
-  //   } else if (numberOfRows === "2") {
-  //     setNumPairsSelected(3);
-  //   } else if (numberOfRows === "3") {
-  //     setNumPairsSelected(7);
-  //   } else if (numberOfRows === "4") {
-  //     setNumPairsSelected(15);
-  //   }
-  // }
+  // Populate variable userQuery with user form results
+  function collectValuesFromForm(queryCategory, values, numberOfRows) {
+    setCategory(queryCategory);
+    concatenateUserInput(values);
+    determineTreeDiagramName(values);
+    if (numberOfRows === "1") {
+      setNumPairsInTree(1);
+    } else if (numberOfRows === "2") {
+      setNumPairsInTree(3);
+    } else if (numberOfRows === "3") {
+      setNumPairsInTree(7);
+    } else if (numberOfRows === "4") {
+      setNumPairsInTree(15);
+    }
+  }
 
-  // async function gatherAndFilterResults() {
-  //   if (userQuery !== null) {
-  //     // Add option of consonants or vowels -- currently only consonants
-  //     const docRef = doc(db, queryCategory, userQuery);
-  //     const docSnap = await getDoc(docRef);
+  async function gatherAndFilterResults() {
+    if (userQuery !== null) {
+      // Add option of consonants or vowels
+      console.log("Control, gatherAndFilterResults, category: ", category);
+      console.log("Control, gatherAndFilterResults, userQuery: ", userQuery);
+      const docRef = doc(db, category, userQuery);
+      const docSnap = await getDoc(docRef);
 
-  //     if (docSnap.exists()) {
-  //       // Before setting results to UI, randomly select and filter them.
-  //       const arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, numPairsSelected);
-  //       filterDocResults(docSnap.data(), arrayOfSelectedIds);
-  //     } else {
-  //       const reversedQuery = userQuery.split("").reduce((accumulator, char) => char + accumulator, "");
-  //       const docRef = doc(db, queryCategory, reversedQuery);
-  //       const docSnap = await getDoc(docRef);
-  //       if (docSnap.exists()) {
-  //         const arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, numPairsSelected);
-  //         filterDocResults(docSnap.data(), arrayOfSelectedIds);
-  //       } else {
-  //         console.log("No such document!");
-  //       }
-  //     }
-  //   }
-  // }
+      console.log("Control, gatherAndFilterResults, docSnap: ", docSnap);
+      if (docSnap.exists()) {
+        // Before setting results to UI, randomly select and filter them.
+        const arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, numPairsInTree);
+        console.log("Control, gatherAndFilterResults, arrayOfSelectedIds: ", arrayOfSelectedIds);
+        filterDocResults(docSnap.data(), arrayOfSelectedIds);
+      } else {
+        const reversedQuery = userQuery.split("").reduce((accumulator, char) => char + accumulator, "");
+        const docRef = doc(db, category, reversedQuery);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, numPairsInTree);
+          filterDocResults(docSnap.data(), arrayOfSelectedIds);
+        } else {
+          console.log("No such document!");
+        }
+      }
+    }
+  }
 
   function randomPairPicker(numPairsAvailable, numPairsToSelect) {
     let randomlySelectedIds = new Set(),
@@ -89,31 +94,24 @@ export default function Control() {
   function filterDocResults(document, arrayOfSelectedIds) {
     const convertedArray = arrayOfSelectedIds.map(String);
     const filteredResults = Object.fromEntries(Object.entries(document).filter(([key]) => convertedArray.includes(String(key))));
+    console.log("Control, filterDocResults, filteredResults: ", filteredResults);
     setResultsToUI(filteredResults);
   }
 
-  // useEffect(() => {
-  //   gatherAndFilterResults();
-  // }, [userQuery, numPairsSelected]);
+  useEffect(() => {
+    gatherAndFilterResults();
+  }, [userQuery, numPairsInTree]);
 
   return (
     <>
-      {/* <h2>Tree Diagram</h2>
+      <h2>Tree Diagram</h2>
       {resultsToUI ? <TreeDiagramExpt userQuery={userQuery} results={resultsToUI} treeDiagramName={treeDiagramName} /> : ""}
       {resultsToUI ? <Results results={resultsToUI} /> : ""}
-      <hr /> */}
-      {/* <h2>Form</h2>
-      <FormControl>
-        <FormLabel>Category</FormLabel>
-        <RadioGroup row value={queryCategory} onChange={handleCategoryChange}>
-          <FormControlLabel value="consonant-pairs-expt" control={<Radio />} label="Consonants" />
-          <FormControlLabel value="vowel-diphthong-pairs-expt" control={<Radio />} label="Vowels" />
-        </RadioGroup>
-      </FormControl> */}
+      <hr />
       {/* prettier-ignore */}
       <Form
-        // collectValuesFromForm={collectValuesFromForm}
-        // gatherAndFilterResults={gatherAndFilterResults}
+        collectValuesFromForm={collectValuesFromForm}
+        gatherAndFilterResults={gatherAndFilterResults}
       />
       <hr />
     </>
