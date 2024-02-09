@@ -62,6 +62,9 @@ export default function Form(props) {
       target: { value },
     } = event;
     console.log("Form, handleDropDownChange, value: ", value);
+    if (value.length > 2) {
+      value.pop();
+    }
     setUserSelectedChars(typeof value === "string" ? value.split(",") : value);
   };
 
