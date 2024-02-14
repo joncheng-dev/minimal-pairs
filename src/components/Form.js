@@ -15,10 +15,11 @@ const MenuProps = {
 };
 
 export default function Form(props) {
-  const { collectValuesFromForm, gatherAndFilterResults } = props;
+  const { onFormSubmission } = props;
+  const { collectValuesFromForm } = props;
   // Try putting these values inherently in the Form component rather than parent
   const consonantCharList = ["B", "L", "R", "V"];
-  const vowelCharList = ["A", "E", "I", "U", "\u026A"];
+  const vowelCharList = ["A", "E", "I", "U", "\u026A", "\u00E6"];
   const arrayOfRowsToDisplay = ["(make a selection)", "1", "2", "3", "4"];
 
   // Which is selected, consonants or vowels?
@@ -30,32 +31,43 @@ export default function Form(props) {
   // How many pairs should be shown in results tree?
   const [numRowsToShow, setNumRowsToShow] = useState("(make a selection)");
 
-  // Function sending information back to Control
-  function onFormSubmission(event) {
-    event.preventDefault();
-    console.log("onFormSubmission, form has been submitted");
-    console.log("onFormSubmission, charCategory: ", charCategory);
-    console.log("onFormSubmission, userSelectedChars: ", userSelectedChars);
-    console.log("onFormSubmission, numRowsToShow: ", numRowsToShow);
+  useEffect(() => {
+    console.log("Form, charCategory: ", charCategory);
+    console.log("Form, userSelectedChars: ", userSelectedChars);
+    console.log("Form, numRowsToShow: ", numRowsToShow);
+  }, []);
 
-    collectValuesFromForm(charCategory, userSelectedChars, numRowsToShow);
-    gatherAndFilterResults();
-  }
+  // Function sending information back to Control
+  // function onFormSubmission(event) {
+  //   event.preventDefault();
+
+  //   const collectedValues = {
+  //     charCategory,
+  //     userSelectedChars,
+  //     numRowsToShow,
+  //   };
+  //   collectValuesFromForm(collectedValues);
+  //   gatherAndFilterResults();
+  // }
 
   useEffect(() => {
     // Sets dropdown select options -- Does this if charCategory changes
     if (charCategory === "consonant-pairs-expt") {
-      console.log("Form, charCategory changed, drop down -> should be consonantCharList: ", charCategory);
+      // console.log("Form, charCategory changed, drop down -> should be consonantCharList: ", charCategory);
       setDropDown1Options(consonantCharList);
       setUserSelectedChars([]);
       setNumRowsToShow("(make a selection)");
     } else {
-      console.log("Form, charCategory changed, drop down -> should be vowelCharList: ", charCategory);
+      // console.log("Form, charCategory changed, drop down -> should be vowelCharList: ", charCategory);
       setDropDown1Options(vowelCharList);
       setUserSelectedChars([]);
       setNumRowsToShow("(make a selection)");
     }
   }, [charCategory]);
+
+  // useEffect(() => {
+  //   gatherAndFilterResults();
+  // }, [charCategory, userSelectedChars, numRowsToShow]);
 
   const handleDropDownChange = (event) => {
     const {
@@ -68,10 +80,21 @@ export default function Form(props) {
     setUserSelectedChars(typeof value === "string" ? value.split(",") : value);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const collectedValues = {
+      charCategory,
+      userSelectedChars,
+      numRowsToShow,
+    };
+    onFormSubmission(collectedValues);
+  };
+
   return (
     <>
       <h2>Form</h2>
-      <Box component="form" onSubmit={onFormSubmission}>
+      <Box component="form" onSubmit={handleSubmit}>
         <FormControl sx={{ m: 1, width: 300 }}>
           <FormLabel>Category</FormLabel>
           <RadioGroup row value={charCategory} onChange={(event) => setCharCategory(event.target.value)}>
@@ -123,51 +146,3 @@ export default function Form(props) {
     </>
   );
 }
-
-// import React, { useState } from "react";
-// import Box from "@mui/material/Box";
-// import InputLabel from "@mui/material/InputLabel";
-// import MenuItem from "@mui/material/MenuItem";
-// import FormControl from "@mui/material/FormControl";
-// import Select from "@mui/material/Select";
-// import Button from "@mui/material/Button";
-
-// function DropDownForm(props) {
-//   const { handleSaveFormValue } = props;
-//   const [age, setAge] = useState("");
-
-//   const handleChange = (e) => {
-//     setAge(e.target.value);
-//   };
-
-//   function handleSubmit(e) {
-//     e.preventDefault();
-//     console.log("handleSubmit triggered");
-//     handleSaveFormValue(age);
-//   }
-
-//   return (
-//     <>
-//       <h2>Drop Down Form</h2>
-//       <Box sx={{ minWidth: 120 }} component="form" onSubmit={handleSubmit}>
-//         <FormControl fullWidth>
-//           <InputLabel id="demo-simple-select-label">Age</InputLabel>
-//           <Select labelId="demo-simple-select-label" id="demo-simple-select" value={age} label="Age" onChange={handleChange}>
-//             <MenuItem value={10}>Ten</MenuItem>
-//             <MenuItem value={20}>Twenty</MenuItem>
-//             <MenuItem value={30}>Thirty</MenuItem>
-//           </Select>
-//         </FormControl>
-//         <Button type="submit" variant="contained">
-//           Submit
-//         </Button>
-//       </Box>
-//     </>
-//   );
-// }
-
-// export default DropDownForm;
-
-// useEffect(() => {
-//   console.log("handleChange", age);
-// }, [age]);
