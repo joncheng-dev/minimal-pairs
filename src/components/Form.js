@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormGroup, FormLabel } from "@mui/material";
 import { Box, Button, Checkbox, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
+import disableIncompatibleValues from "../util/disableIncompatibleValues";
 
 // Style
 const ITEM_HEIGHT = 48;
@@ -19,8 +20,33 @@ export default function Form(props) {
   const { collectValuesFromForm } = props;
   // Try putting these values inherently in the Form component rather than parent
   const consonantCharList = ["B", "L", "R", "V"];
-  const vowelCharList = ["A", "E", "I", "U", "\u026A", "\u00E6"];
+  // const vowelCharList = ["A", "E", "I", "U", "\u026A", "\u00E6"];
   const arrayOfRowsToDisplay = ["(make a selection)", "1", "2", "3", "4"];
+
+  const vowelCharList = [
+    {
+      char: "A",
+      disabled: false,
+      isSelected: false,
+    },
+    {
+      char: "E",
+      disabled: false,
+      isSelected: false,
+    },
+    {
+      char: "I",
+      disabled: false,
+      isSelected: false,
+    },
+    {
+      char: "Y",
+      disabled: false,
+      isSelected: false,
+    },
+  ];
+
+  const [vowelCharListState, setVowelCharListState] = useState(vowelCharList);
 
   // Which is selected, consonants or vowels?
   const [charCategory, setCharCategory] = useState("consonant-pairs-expt");
@@ -73,11 +99,44 @@ export default function Form(props) {
     const {
       target: { value },
     } = event;
-    console.log("Form, handleDropDownChange, value: ", value);
-    if (value.length > 2) {
-      value.pop();
+    // console.log("Form, handleDropDownChange, value: ", value);
+    const copiedVowelListState = [...vowelCharListState];
+    let newVowelListState = null;
+    console.log("event.target.value", event.target.value);
+
+    const countSelectedChars = copiedVowelListState.filter((entry) => entry.isSelected).length;
+    console.log("handleDropDownChange, countSelectedChars: ", countSelectedChars);
+
+    if (countSelectedChars >= 2) {
+      newVowelListState = copiedVowelListState.map((vowel) => {
+        if (value.isSelected) {
+          return vowel;
+        } else {
+          return {
+            ...vowel,
+            disabled: true,
+          };
+        }
+      });
+      console.log("vowelCharListState with all values disabled: ", newVowelListState);
+      setVowelCharListState(newVowelListState);
+    } else {
+      newVowelListState = copiedVowelListState.map((vowel) => {
+        if (vowel.char === event.target.value[0] && !vowel.disabled) {
+          return {
+            ...vowel,
+            isSelected: !vowel.isSelected,
+          };
+        } else {
+          return vowel;
+        }
+      });
+      const disabledVowelList = disableIncompatibleValues(newVowelListState);
+      console.log("disabledVowelList", disabledVowelList);
+      setVowelCharListState(disabledVowelList);
     }
-    setUserSelectedChars(typeof value === "string" ? value.split(",") : value);
+
+    // setUserSelectedChars(typeof value === "string" ? value.split(",") : value);
   };
 
   const handleSubmit = (event) => {
@@ -113,10 +172,10 @@ export default function Form(props) {
             renderValue={(selected) => selected.join(", ")}
             MenuProps={MenuProps}
           >
-            {dropDown1Options.map((char) => (
-              <MenuItem key={char} value={char}>
-                <Checkbox checked={userSelectedChars.indexOf(char) > -1} />
-                <ListItemText primary={char} />
+            {vowelCharListState.map((vowel) => (
+              <MenuItem key={vowel.char} value={vowel.char} disabled={vowel.disabled}>
+                <Checkbox checked={vowel.isSelected} />
+                <ListItemText primary={vowel.char} />
               </MenuItem>
             ))}
           </Select>
