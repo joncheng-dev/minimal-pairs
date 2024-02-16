@@ -104,12 +104,23 @@ export default function Form(props) {
     let newVowelListState = null;
     console.log("event.target.value", event.target.value);
 
-    const countSelectedChars = copiedVowelListState.filter((entry) => entry.isSelected).length;
+    newVowelListState = copiedVowelListState.map((vowel) => {
+      if (vowel.char === event.target.value[0] && !vowel.disabled) {
+        return {
+          ...vowel,
+          isSelected: !vowel.isSelected,
+        };
+      } else {
+        return vowel;
+      }
+    });
+
+    const countSelectedChars = newVowelListState.filter((entry) => entry.isSelected).length;
     console.log("handleDropDownChange, countSelectedChars: ", countSelectedChars);
 
     if (countSelectedChars >= 2) {
-      newVowelListState = copiedVowelListState.map((vowel) => {
-        if (value.isSelected) {
+      const updatedVowelListState = newVowelListState.map((vowel) => {
+        if (vowel.isSelected) {
           return vowel;
         } else {
           return {
@@ -118,24 +129,13 @@ export default function Form(props) {
           };
         }
       });
-      console.log("vowelCharListState with all values disabled: ", newVowelListState);
-      setVowelCharListState(newVowelListState);
+      console.log("updatedVowelListState with all values disabled: ", updatedVowelListState);
+      setVowelCharListState(updatedVowelListState);
     } else {
-      newVowelListState = copiedVowelListState.map((vowel) => {
-        if (vowel.char === event.target.value[0] && !vowel.disabled) {
-          return {
-            ...vowel,
-            isSelected: !vowel.isSelected,
-          };
-        } else {
-          return vowel;
-        }
-      });
       const disabledVowelList = disableIncompatibleValues(newVowelListState);
       console.log("disabledVowelList", disabledVowelList);
       setVowelCharListState(disabledVowelList);
     }
-
     // setUserSelectedChars(typeof value === "string" ? value.split(",") : value);
   };
 
