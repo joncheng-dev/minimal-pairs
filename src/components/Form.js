@@ -46,6 +46,11 @@ export default function Form(props) {
     },
   ];
 
+  // in this list vowelCharList, for each VOWEL,
+  // Do stuff with vowel.char
+  // Look at vowel.disabled
+  // look at vowel.isSelected
+
   const [vowelCharListState, setVowelCharListState] = useState(vowelCharList);
 
   // Which is selected, consonants or vowels?
@@ -102,8 +107,8 @@ export default function Form(props) {
     // console.log("Form, handleDropDownChange, value: ", value);
     const copiedVowelListState = [...vowelCharListState];
     let newVowelListState = null;
-    console.log("event.target.value", event.target.value);
-
+    console.log("Form, handleDropDownChange, event.target.value", event.target.value);
+    // handles changing "isSelected" state from false / true
     newVowelListState = copiedVowelListState.map((vowel) => {
       if (vowel.char === event.target.value[0] && !vowel.disabled) {
         return {
@@ -114,9 +119,33 @@ export default function Form(props) {
         return vowel;
       }
     });
+    // newVowelListState = [
+    // {
+    //   char: "A",
+    //   disabled: false,
+    //   isSelected: false,
+    // },
+    // {
+    //   char: "E",
+    //   disabled: false,
+    //   isSelected: false,
+    // },
+    // {
+    //   char: "I",
+    //   disabled: false,
+    //   isSelected: true,
+    // },
+    // {
+    //   char: "Y",
+    //   disabled: false,
+    //   isSelected: false,
+    // },
+    // ]
 
+    // counts how many characters are currently selected by user
     const countSelectedChars = newVowelListState.filter((entry) => entry.isSelected).length;
     console.log("handleDropDownChange, countSelectedChars: ", countSelectedChars);
+    // countSelectedChars = 1;
 
     if (countSelectedChars >= 2) {
       const updatedVowelListState = newVowelListState.map((vowel) => {
@@ -132,9 +161,47 @@ export default function Form(props) {
       console.log("updatedVowelListState with all values disabled: ", updatedVowelListState);
       setVowelCharListState(updatedVowelListState);
     } else {
-      const disabledVowelList = disableIncompatibleValues(newVowelListState);
-      console.log("disabledVowelList", disabledVowelList);
-      setVowelCharListState(disabledVowelList);
+      const updatedVowelListState = newVowelListState.map((vowel) => {
+        if (vowel.isSelected) {
+          return vowel;
+        } else {
+          return {
+            ...vowel,
+            disabled: false,
+          };
+        }
+      });
+      // First, reenable everything.
+      // if isSelected, leave it alone.
+      // if !isSelected, enable it. --> disabled: false
+      // Second, pass this array in to disabledIncompatibleValues.
+      // Third, the result is now displayed to user.
+      const disabledCharacterList = disableIncompatibleValues(updatedVowelListState);
+      console.log("less than 2 chars selected, character list: ", disabledCharacterList);
+      // if it is not in disabledVowelList, AND it is not currently selected, enable it.
+      // disabledVowelList = [
+      //   {
+      //     char: "A",
+      //     disabled: false,
+      //     isSelected: true,
+      //   },
+      //   {
+      //     char: "E",
+      //     disabled: false,
+      //     isSelected: false,
+      //   },
+      //   {
+      //     char: "I",
+      //     disabled: true,
+      //     isSelected: false,
+      //   },
+      //   {
+      //     char: "Y",
+      //     disabled: true,
+      //     isSelected: false,
+      //   },
+      // ];
+      setVowelCharListState(disabledCharacterList);
     }
     // setUserSelectedChars(typeof value === "string" ? value.split(",") : value);
   };
