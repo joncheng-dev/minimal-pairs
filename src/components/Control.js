@@ -80,22 +80,18 @@ export default function Control() {
 
   function onFormSubmission(collectedValues) {
     console.log("Control, onFormSubmission, collectedValues.charCategory: ", collectedValues.charCategory);
-    console.log("Control, onFormSubmission, collectedValues.userSelectedChars: ", collectedValues.userSelectedChars);
-    console.log("Control, onFormSubmission, collectedValues.userSelectedChars[0]: ", collectedValues.userSelectedChars[0]);
-    console.log("Control, onFormSubmission, collectedValues.userSelectedChars[1]: ", collectedValues.userSelectedChars[1]);
+    console.log("Control, onFormSubmission, collectedValues.selectedChars: ", collectedValues.selectedChars);
+    console.log("Control, onFormSubmission, collectedValues.selectedChars[0]: ", collectedValues.selectedChars[0]);
+    console.log("Control, onFormSubmission, collectedValues.selectedChars[1]: ", collectedValues.selectedChars[1]);
 
     // Take the data from the user -- category, query, number pairs
     // Trigger a database query
     // Random pair picker
     // Gather and Filter Results
 
-    setTreeDiagramName(collectedValues.userSelectedChars[0] + " vs " + collectedValues.userSelectedChars[1]);
+    setTreeDiagramName(collectedValues.selectedChars[0] + " vs " + collectedValues.selectedChars[1]);
 
-    gatherAndFilterResults(
-      collectedValues.charCategory,
-      collectedValues.userSelectedChars.join(""),
-      getNumPairsInTree(collectedValues.numRowsToShow)
-    );
+    gatherAndFilterResults(collectedValues.charCategory, collectedValues.selectedChars.join(""), getNumPairsInTree(collectedValues.numRowsToShow));
   }
 
   return (

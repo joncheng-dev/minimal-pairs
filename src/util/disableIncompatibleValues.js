@@ -2,6 +2,15 @@ const vowelListDictionary = {
   A: {
     incompatibleCharacters: ["Y"],
   },
+  E: {
+    incompatibleCharacters: ["cons"],
+  },
+  cons: {
+    incompatibleCharacters: ["E"],
+  },
+  // null: {
+  //   incompatibleCharacters: ["E", "cons"],
+  // },
   Y: {
     incompatibleCharacters: ["A"],
   },
