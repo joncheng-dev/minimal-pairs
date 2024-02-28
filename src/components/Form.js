@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormGroup, FormLabel } from "@mui/material";
 import { Box, Button, Checkbox, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 import disableIncompatibleValues from "../util/disableIncompatibleValues";
+import { consonantCharList, vowelCharList } from "../data/characterLists";
 
 // Style
 const ITEM_HEIGHT = 48;
@@ -19,63 +20,11 @@ export default function Form(props) {
   const { onFormSubmission } = props;
   const { collectValuesFromForm } = props;
   // Try putting these values inherently in the Form component rather than parent
-  const consonantCharList = ["B", "L", "R", "V"];
-  // const vowelCharList = ["A", "E", "I", "U", "\u026A", "\u00E6"];
   const arrayOfRowsToDisplay = ["(make a selection)", "1", "2", "3", "4"];
 
-  const vowelCharList = [
-    {
-      char: "A",
-      disabled: false,
-      isSelected: false,
-    },
-    {
-      char: "cons",
-      disabled: false,
-      isSelected: false,
-    },
-    // {
-    //   char: "null",
-    //   disabled: false,
-    //   isSelected: false,
-    // },
-    {
-      char: "E",
-      disabled: false,
-      isSelected: false,
-    },
-    // {
-    //   char: "I",
-    //   disabled: false,
-    //   isSelected: false,
-    // },
-    // {
-    //   char: "U",
-    //   disabled: false,
-    //   isSelected: false,
-    // },
-    // {
-    //   char: "\u026A",
-    //   disabled: false,
-    //   isSelected: false,
-    // },
-    // {
-    //   char: "\u00E6",
-    //   disabled: false,
-    //   isSelected: false,
-    // },
-    {
-      char: "Y",
-      disabled: false,
-      isSelected: false,
-    },
-  ];
-
-  const [vowelCharListState, setVowelCharListState] = useState(vowelCharList);
+  const [charListState, setCharListState] = useState(vowelCharList);
   // Which is selected, consonants or vowels?
   const [charCategory, setCharCategory] = useState("consonant-pairs-expt");
-  // Decides what characters to show to user in dropdown select.
-  const [dropDown1Options, setDropDown1Options] = useState(consonantCharList);
   // Grabs values user selected
   const [userSelectedChars, setUserSelectedChars] = useState([]);
   // How many pairs should be shown in results tree?
@@ -91,12 +40,12 @@ export default function Form(props) {
     // Sets dropdown select options -- Does this if charCategory changes
     if (charCategory === "consonant-pairs-expt") {
       // console.log("Form, charCategory changed, drop down -> should be consonantCharList: ", charCategory);
-      setDropDown1Options(consonantCharList);
+      setCharListState(consonantCharList);
       setUserSelectedChars([]);
       setNumRowsToShow("(make a selection)");
     } else {
       // console.log("Form, charCategory changed, drop down -> should be vowelCharList: ", charCategory);
-      setDropDown1Options(vowelCharList);
+      setCharListState(vowelCharList);
       setUserSelectedChars([]);
       setNumRowsToShow("(make a selection)");
     }
@@ -107,63 +56,72 @@ export default function Form(props) {
       target: { value },
     } = event;
     // console.log("Form, handleDropDownChange, value: ", value);
-    const copiedVowelListState = [...vowelCharListState];
-    let newVowelListState = null;
+    const copiedCharListState = [...charListState];
+    let characterListState = null;
     console.log("Form, handleDropDownChange, event.target.value", event.target.value);
     // handles changing "isSelected" state from false / true
-    newVowelListState = copiedVowelListState.map((vowel) => {
-      if (vowel.char === event.target.value[0] && !vowel.disabled) {
+    characterListState = copiedCharListState.map((phoneme) => {
+      if (phoneme.char === event.target.value[0] && !phoneme.disabled) {
         return {
-          ...vowel,
-          isSelected: !vowel.isSelected,
+          ...phoneme,
+          isSelected: !phoneme.isSelected,
         };
       } else {
-        return vowel;
+        return phoneme;
       }
     });
     // counts how many characters are currently selected by user
-    const countSelectedChars = newVowelListState.filter((entry) => entry.isSelected).length;
+    const countSelectedChars = characterListState.filter((entry) => entry.isSelected).length;
     console.log("handleDropDownChange, countSelectedChars: ", countSelectedChars);
 
     if (countSelectedChars >= 2) {
-      const updatedVowelListState = newVowelListState.map((vowel) => {
-        if (vowel.isSelected) {
-          return vowel;
+      const updatedCharListState = characterListState.map((phoneme) => {
+        if (phoneme.isSelected) {
+          return phoneme;
         } else {
           return {
-            ...vowel,
+            ...phoneme,
             disabled: true,
           };
         }
       });
-      console.log("updatedVowelListState with all values disabled: ", updatedVowelListState);
-      setVowelCharListState(updatedVowelListState);
-    } else {
-      const updatedVowelListState = newVowelListState.map((vowel) => {
-        if (vowel.isSelected) {
-          return vowel;
+      console.log("2 boxes checked, all remaining boxes disabled: ", updatedCharListState);
+      setCharListState(updatedCharListState);
+    } else if (countSelectedChars === 1) {
+      const updatedCharListState = characterListState.map((phoneme) => {
+        if (phoneme.isSelected) {
+          return phoneme;
         } else {
           return {
-            ...vowel,
+            ...phoneme,
             disabled: false,
           };
         }
       });
+      console.log("1 box checked, before incompatible values filtered: ", updatedCharListState);
+      const disabledCharacterList = disableIncompatibleValues(updatedCharListState);
+      console.log("1 box checked, after incompatible values filtered: ", disabledCharacterList);
 
-      const disabledCharacterList = disableIncompatibleValues(updatedVowelListState);
-      console.log("less than 2 chars selected, character list: ", disabledCharacterList);
-
-      setVowelCharListState(disabledCharacterList);
+      setCharListState(disabledCharacterList);
+    } else {
+      const updatedCharListState = characterListState.map((vowel) => {
+        return {
+          ...vowel,
+          disabled: false,
+        };
+      });
+      console.log("0 boxes checked, all characters should be enabled: ", updatedCharListState);
+      setCharListState(updatedCharListState);
     }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    const selectedChars = vowelCharListState
+    const selectedChars = charListState
       //prettier-ignore
-      .filter((vowel) => vowel.isSelected)
-      .map((vowel) => vowel.char);
+      .filter((phoneme) => phoneme.isSelected)
+      .map((phoneme) => phoneme.char);
     console.log("handleSubmit, selectedChars: ", selectedChars);
     // setUserSelectedChars(selectedChars);
 
@@ -198,10 +156,10 @@ export default function Form(props) {
             renderValue={(selected) => selected.join(", ")}
             MenuProps={MenuProps}
           >
-            {vowelCharListState.map((vowel) => (
-              <MenuItem key={vowel.char} value={vowel.char} disabled={vowel.disabled}>
-                <Checkbox checked={vowel.isSelected} />
-                <ListItemText primary={vowel.char} />
+            {charListState.map((phoneme) => (
+              <MenuItem key={phoneme.char} value={phoneme.char} disabled={phoneme.disabled}>
+                <Checkbox checked={phoneme.isSelected} />
+                <ListItemText primary={phoneme.char} />
               </MenuItem>
             ))}
           </Select>
@@ -347,3 +305,52 @@ export default function Form(props) {
 //   console.log("Form, handleDropDownChange, selectedChars: ", selectedChars);
 //   // setUserSelectedChars(typeof value === "string" ? value.split(",") : value);
 // };
+
+// characterList = [
+//   {
+//     char: "cons",
+//     disabled: false,
+//     isSelected: true,
+//   },
+//   {
+//     char: "E",
+//     disabled: false,
+//     isSelected: false,
+//   },
+//   {
+//     char: "A",
+//     disabled: false,
+//     isSelected: false,
+//   },
+// ];
+
+// phonemeDictionary = {
+//   A: {
+//     incompatibleCharacters: ["E"],
+//   },
+//   E: {
+//     incompatibleCharacters: ["cons"],
+//   },
+//   cons: {
+//     incompatibleCharacters: ["E", "null"],
+//   },
+// };
+
+// // Does it actually return an array?
+// disabledCharList = [
+//   {
+//     char: "cons",
+//     disabled: false,
+//     isSelected: true,
+//   },
+//   {
+//     char: "E",
+//     disabled: false,
+//     isSelected: false,
+//   },
+//   {
+//     char: "A",
+//     disabled: false,
+//     isSelected: false,
+//   },
+// ];

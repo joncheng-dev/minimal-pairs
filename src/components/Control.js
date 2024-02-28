@@ -59,7 +59,9 @@ export default function Control() {
 
   async function gatherAndFilterResults(category, query, numPairs) {
     if (category && query) {
-      const possibleQueries = [query, query.split("").reverse().join("")];
+      const queryOne = query[0] + query[1];
+      const queryTwo = query[1] + query[0];
+      const possibleQueries = [queryOne, queryTwo];
 
       for (const currentQuery of possibleQueries) {
         const docRef = doc(db, category, currentQuery);
@@ -91,7 +93,7 @@ export default function Control() {
 
     setTreeDiagramName(collectedValues.selectedChars[0] + " vs " + collectedValues.selectedChars[1]);
 
-    gatherAndFilterResults(collectedValues.charCategory, collectedValues.selectedChars.join(""), getNumPairsInTree(collectedValues.numRowsToShow));
+    gatherAndFilterResults(collectedValues.charCategory, collectedValues.selectedChars, getNumPairsInTree(collectedValues.numRowsToShow));
   }
 
   return (
