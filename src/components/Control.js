@@ -21,6 +21,7 @@ export default function Control() {
   // const [numPairsInTree, setNumPairsInTree] = useState(null);
   const [treeDiagramName, setTreeDiagramName] = useState(null);
   const [resultsToUI, setResultsToUI] = useState(null);
+  const [notEnoughPairsMessage, setNotEnoughPairsMessage] = useState(null);
   const initialRender = useRef(true);
 
   // Functions
@@ -34,6 +35,21 @@ export default function Control() {
         return 7;
       case "4":
         return 15;
+      default:
+        return 0;
+    }
+  }
+
+  function numPairsToRows(numPairs) {
+    switch (numPairs) {
+      case 1:
+        return 1;
+      case 3:
+        return 2;
+      case 7:
+        return 3;
+      case 15:
+        return 4;
       default:
         return 0;
     }
@@ -69,8 +85,18 @@ export default function Control() {
 
         console.log("Control, gatherAndFilterResults, docSnap._key.path.segments: ", docSnap._key.path.segments);
         if (docSnap.exists()) {
-          // Before setting results to UI, randomly select and filter them.
-          const arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, numPairs);
+          let arrayOfSelectedIds;
+          if (numPairs >= Object.keys(docSnap.data()).length) {
+            arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, Object.keys(docSnap.data()).length);
+            setNotEnoughPairsMessage(
+              `You've selected ${numPairsToRows(numPairs)} rows (i.e. ${numPairs} pairs) to show, but there are only ${
+                Object.keys(docSnap.data()).length
+              } pairs available.`
+            );
+          } else {
+            // Before setting results to UI, randomly select and filter them.
+            arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, numPairs);
+          }
           console.log("Control, gatherAndFilterResults, arrayOfSelectedIds: ", arrayOfSelectedIds);
           filterDocResults(docSnap.data(), arrayOfSelectedIds);
           return; // Stop searching after finding a match
@@ -100,6 +126,7 @@ export default function Control() {
     <>
       <h2>Tree Diagram</h2>
       {resultsToUI ? <TreeDiagramExpt results={resultsToUI} treeDiagramName={treeDiagramName} /> : ""}
+      {notEnoughPairsMessage && <h3>{notEnoughPairsMessage}</h3>}
       {resultsToUI ? <Results results={resultsToUI} /> : ""}
       <hr />
       {/* prettier-ignore */}
