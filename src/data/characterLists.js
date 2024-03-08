@@ -243,3 +243,22 @@ export const vowelCharList = [
     isSelected: false,
   },
 ];
+
+export const sampleData = {
+  0: ["lino", "rhino"],
+  1: ["collect", "correct"],
+  2: ["clack", "crack"],
+  3: ["floored", "fraud"],
+  4: ["flow", "fro"],
+  5: ["flute", "fruit"],
+  6: ["flight", "fright"],
+  7: ["glass", "grass"],
+  8: ["lavish", "ravish"],
+  9: ["Mauritius", "malicious"],
+  10: ["lentil", "rental"],
+  11: ["airless", "heiress"],
+  12: ["clamour", "crammer"],
+  13: ["blued", "brood"],
+  14: ["bluer", "brewer"],
+  15: ["celebration", "cerebration"],
+};

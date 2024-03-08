@@ -99,7 +99,7 @@ export default function Form(props) {
         }
       });
       console.log("1 box checked, before incompatible values filtered: ", updatedCharListState);
-      const disabledCharacterList = disableIncompatibleValues(updatedCharListState);
+      const disabledCharacterList = disableIncompatibleValues(updatedCharListState, charCategory);
       console.log("1 box checked, after incompatible values filtered: ", disabledCharacterList);
 
       setCharListState(disabledCharacterList);
@@ -141,8 +141,8 @@ export default function Form(props) {
         <FormControl sx={{ m: 1, width: 300 }}>
           <FormLabel>Category</FormLabel>
           <RadioGroup row value={charCategory} onChange={(event) => setCharCategory(event.target.value)}>
-            <FormControlLabel value="consonant-pairs-expt" control={<Radio />} label="Consonants" />
-            <FormControlLabel value="vowel-diphthong-pairs-expt" control={<Radio />} label="Vowels" />
+            <FormControlLabel data-testid="consonant-radio-button" value="consonant-pairs-expt" control={<Radio />} label="Consonants" />
+            <FormControlLabel data-testid="vowel-radio-button" value="vowel-diphthong-pairs-expt" control={<Radio />} label="Vowels" />
           </RadioGroup>
           <br />
           {/* <InputLabel id="multiple-checkbox-label">Characters</InputLabel> */}
@@ -171,6 +171,7 @@ export default function Form(props) {
             defaultValue={"(make a selection)"}
             value={numRowsToShow}
             label="Number of rows"
+            data-testid="num-rows-selector"
             onChange={(event) => setNumRowsToShow(event.target.value)}
           >
             {arrayOfRowsToDisplay.map((option, index) => (

@@ -86,16 +86,21 @@ export default function Control() {
         console.log("Control, gatherAndFilterResults, docSnap._key.path.segments: ", docSnap._key.path.segments);
         if (docSnap.exists()) {
           let arrayOfSelectedIds;
-          if (numPairs >= Object.keys(docSnap.data()).length) {
-            arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, Object.keys(docSnap.data()).length);
+          const dataKeys = Object.keys(docSnap.data());
+          if (dataKeys.length === 1 && docSnap.data()[0][0] === "") {
+            setNotEnoughPairsMessage("No pairs available for the selected query.");
+            return;
+          }
+          if (numPairs >= dataKeys.length) {
+            arrayOfSelectedIds = randomPairPicker(dataKeys.length, dataKeys.length);
             setNotEnoughPairsMessage(
               `You've selected ${numPairsToRows(numPairs)} rows (i.e. ${numPairs} pairs) to show, but there are only ${
-                Object.keys(docSnap.data()).length
+                dataKeys.length
               } pairs available.`
             );
           } else {
             // Before setting results to UI, randomly select and filter them.
-            arrayOfSelectedIds = randomPairPicker(Object.keys(docSnap.data()).length, numPairs);
+            arrayOfSelectedIds = randomPairPicker(dataKeys.length, numPairs);
           }
           console.log("Control, gatherAndFilterResults, arrayOfSelectedIds: ", arrayOfSelectedIds);
           filterDocResults(docSnap.data(), arrayOfSelectedIds);

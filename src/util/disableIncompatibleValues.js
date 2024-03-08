@@ -1,4 +1,4 @@
-const phonemeDictionary = {
+const phonemeDictionaryVowels = {
   // vowels & diphthongs start here
   i: {
     incompatibleCharacters: [],
@@ -112,6 +112,9 @@ const phonemeDictionary = {
       "cons",
     ],
   },
+};
+
+const phonemeDictionaryCons = {
   //consonants starts here
   p: {
     incompatibleCharacters: [],
@@ -186,6 +189,7 @@ const phonemeDictionary = {
     incompatibleCharacters: ["vowel"],
   },
   null: {
+    // duplicate. Vowels has a null. Consonants have a null. Differentiate this.
     incompatibleCharacters: [
       "t",
       "d",
@@ -230,7 +234,7 @@ const phonemeDictionary = {
   },
 };
 
-export default function disableIncompatibleValues(characterList) {
+export default function disableIncompatibleValues(characterList, charCategory) {
   let modifiedCharList = [...characterList];
   console.log("disableIncompatibleValues, modifiedCharList: ", modifiedCharList);
   // Find that one phoneme where "isSelected: true"
@@ -241,7 +245,13 @@ export default function disableIncompatibleValues(characterList) {
   //     isSelected: true,
   //  };
   // Check that character against the dictionary.
-  const phonemeCompatibility = phonemeDictionary[selectedPhoneme.char];
+  let phonemeCompatibility;
+
+  if (charCategory === "consonant-pairs-expt") {
+    phonemeCompatibility = phonemeDictionaryCons[selectedPhoneme.char];
+  } else {
+    phonemeCompatibility = phonemeDictionaryVowels[selectedPhoneme.char];
+  }
   // const phonemeCompatibility = phonemeDictionary["cons"];
   // const phonemeCompatibility = {
   //   incompatibleCharacters: ["E"],

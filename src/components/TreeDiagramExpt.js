@@ -32,7 +32,7 @@ const drawBinaryTree = (title, childrenWords) => {
 };
 
 function TreeDiagramExpt(props) {
-  const { results, treeDiagramName, userQuery } = props;
+  const { results, treeDiagramName } = props;
   const data = arrayToRows();
 
   function arrayToRows() {
