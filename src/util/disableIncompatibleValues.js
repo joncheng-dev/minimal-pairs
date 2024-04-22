@@ -247,7 +247,7 @@ export default function disableIncompatibleValues(characterList, charCategory) {
   // Check that character against the dictionary.
   let phonemeCompatibility;
 
-  if (charCategory === "consonant-pairs-expt") {
+  if (charCategory === "consonants") {
     phonemeCompatibility = phonemeDictionaryCons[selectedPhoneme.char];
   } else {
     phonemeCompatibility = phonemeDictionaryVowels[selectedPhoneme.char];

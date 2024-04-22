@@ -1,50 +1,24 @@
 import React from "react";
 
-function Results(props) {
+export default function Results(props) {
   const { results } = props;
+  console.log("Results, results: ", results);
   return (
     <>
       <p>Results</p>
-      {Object.values(results).map((entry, index) => (
-        <div key={index}>
-          <ul>
-            <li>Id: {Object.keys(results)[index]}</li>
+      <ul>
+        {results.map((entry, index) => (
+          <div key={index}>
+            Index: {index}
             <ul>
-              <li>{entry[0]}</li>
-              <li>{entry[1]}</li>
+              <li>{entry.firstWord}</li>
+              {console.log("entry.firstWord: ", entry.firstWord)}
+              <li>{entry.secondWord}</li>
+              {console.log("entry.secondWord: ", entry.secondWord)}
             </ul>
-          </ul>
-        </div>
-      ))}
+          </div>
+        ))}
+      </ul>
     </>
   );
 }
-
-export default Results;
-
-// Previous version of Results.js
-
-// import React from "react";
-
-// function Results(props) {
-//   const { results } = props;
-//   // console.log("results inside Results.js: ", results);
-//   return (
-//     <>
-//       <p>Results</p>
-//       {Object.values(results).map((entry, index) => (
-//         <div key={entry.id}>
-//           <ul>
-//             <li>Id: {entry.id}</li>
-//             <ul>
-//               <li>{entry.pair[0]}</li>
-//               <li>{entry.pair[1]}</li>
-//             </ul>
-//           </ul>
-//         </div>
-//       ))}
-//     </>
-//   );
-// }
-
-// export default Results;

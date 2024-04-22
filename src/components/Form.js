@@ -24,7 +24,7 @@ export default function Form(props) {
 
   const [charListState, setCharListState] = useState(vowelCharList);
   // Which is selected, consonants or vowels?
-  const [charCategory, setCharCategory] = useState("consonant-pairs-expt");
+  const [charCategory, setCharCategory] = useState("consonants");
   // Grabs values user selected
   const [userSelectedChars, setUserSelectedChars] = useState([]);
   // How many pairs should be shown in results tree?
@@ -38,7 +38,7 @@ export default function Form(props) {
 
   useEffect(() => {
     // Sets dropdown select options -- Does this if charCategory changes
-    if (charCategory === "consonant-pairs-expt") {
+    if (charCategory === "consonants") {
       // console.log("Form, charCategory changed, drop down -> should be consonantCharList: ", charCategory);
       setCharListState(consonantCharList);
       setUserSelectedChars([]);
@@ -141,8 +141,8 @@ export default function Form(props) {
         <FormControl sx={{ m: 1, width: 300 }}>
           <FormLabel>Category</FormLabel>
           <RadioGroup row value={charCategory} onChange={(event) => setCharCategory(event.target.value)}>
-            <FormControlLabel data-testid="consonant-radio-button" value="consonant-pairs-expt" control={<Radio />} label="Consonants" />
-            <FormControlLabel data-testid="vowel-radio-button" value="vowel-diphthong-pairs-expt" control={<Radio />} label="Vowels" />
+            <FormControlLabel data-testid="consonant-radio-button" value="consonants" control={<Radio />} label="Consonants" />
+            <FormControlLabel data-testid="vowel-radio-button" value="vowels" control={<Radio />} label="Vowels" />
           </RadioGroup>
           <br />
           {/* <InputLabel id="multiple-checkbox-label">Characters</InputLabel> */}

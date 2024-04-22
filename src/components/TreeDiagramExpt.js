@@ -36,8 +36,17 @@ function TreeDiagramExpt(props) {
   const data = arrayToRows();
 
   function arrayToRows() {
-    const flattenedArray = Object.values(results).flat();
-    return drawBinaryTree(treeDiagramName, flattenedArray);
+    const newArray = [];
+    results.forEach((entry) => {
+      if (entry.firstWord) {
+        newArray.push(entry.firstWord);
+      }
+      if (entry.secondWord) {
+        newArray.push(entry.secondWord);
+      }
+    });
+    // const flattenedArray = Object.values(results).flat();
+    return drawBinaryTree(treeDiagramName, newArray);
   }
 
   const renderRectSvgNode = ({ nodeDatum }) => (
