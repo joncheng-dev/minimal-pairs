@@ -105,6 +105,7 @@ export default function Control() {
   //   };
   //   tempDbQuery();
   // }, []);
+  //
 
   async function gatherAndFilterResults(category, query, numPairs) {
     if (category && query) {
