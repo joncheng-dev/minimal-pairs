@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Radio, RadioGroup, FormControlLabel, FormControl, FormGroup, FormLabel } from "@mui/material";
+import { Radio, RadioGroup, FormControlLabel, FormControl, FormGroup, FormLabel, Typography } from "@mui/material";
 import { Box, Button, Checkbox, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
 import disableIncompatibleValues from "../util/disableIncompatibleValues";
 import { consonantCharList, vowelCharList } from "../data/characterLists";
@@ -56,6 +56,10 @@ export default function Form(props) {
       target: { value },
     } = event;
     // console.log("Form, handleDropDownChange, value: ", value);
+    // setUserSelectedChars(
+    //   // On autofill we get a stringified value.
+    //   typeof value === "string" ? value.split(",") : value
+    // );
     const copiedCharListState = [...charListState];
     let characterListState = null;
     console.log("Form, handleDropDownChange, event.target.value", event.target.value);
@@ -145,6 +149,7 @@ export default function Form(props) {
             <FormControlLabel data-testid="vowel-radio-button" value="vowels" control={<Radio />} label="Vowels" />
           </RadioGroup>
           <br />
+          <Typography>Select the phonemes</Typography>
           {/* <InputLabel id="multiple-checkbox-label">Characters</InputLabel> */}
           <Select
             labelId="multiple-checkbox-label"
@@ -165,6 +170,7 @@ export default function Form(props) {
           </Select>
         </FormControl>
         <br />
+        {/* <Typography>Select the phonemes:</Typography> */}
         <InputLabel>Select the number of rows you'd like to view</InputLabel>
         <FormControl sx={{ m: 1, width: 300 }}>
           <Select

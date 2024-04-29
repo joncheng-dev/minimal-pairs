@@ -32,12 +32,12 @@ const drawBinaryTree = (title, childrenWords) => {
 };
 
 function TreeDiagramExpt(props) {
-  const { results, treeDiagramName } = props;
+  const { treeData, treeDiagramName } = props;
   const data = arrayToRows();
 
   function arrayToRows() {
     const newArray = [];
-    results.forEach((entry) => {
+    treeData.forEach((entry) => {
       if (entry.firstWord) {
         newArray.push(entry.firstWord);
       }
@@ -45,7 +45,6 @@ function TreeDiagramExpt(props) {
         newArray.push(entry.secondWord);
       }
     });
-    // const flattenedArray = Object.values(results).flat();
     return drawBinaryTree(treeDiagramName, newArray);
   }
 

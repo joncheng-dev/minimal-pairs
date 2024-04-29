@@ -5,7 +5,7 @@ import Control from "./Control";
 function App() {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       {/* <h3>Sub Header</h3>
       <p>What do you want to practice today?</p> */}
       <Control />
