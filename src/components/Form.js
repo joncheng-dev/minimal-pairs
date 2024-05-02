@@ -158,6 +158,7 @@ export default function Form(props) {
             <Typography style={{ flexGrow: 1 }}>Vowels</Typography>
           </Stack>
           <br />
+          <br />
           <Typography>Select two phonemes from the dropdown menu</Typography>
           {/* <InputLabel id="multiple-checkbox-label">Characters</InputLabel> */}
           <Select
@@ -179,6 +180,7 @@ export default function Form(props) {
           </Select>
         </FormControl>
         <br />
+        <br />
         {/* <Typography>Select the phonemes:</Typography> */}
         <InputLabel>Select the number of rows you'd like to view</InputLabel>
         <FormControl sx={{ m: 1, width: 300 }}>
@@ -196,6 +198,8 @@ export default function Form(props) {
             ))}
           </Select>
         </FormControl>
+        <br />
+        <br />
         <Button type="submit" variant="contained" sx={{ m: 1, width: 300 }}>
           Submit
         </Button>

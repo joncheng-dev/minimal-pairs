@@ -19,7 +19,7 @@ export default function LeftNav(props) {
   };
 
   const DrawerList = (
-    <Box sx={{ width: 400 }} role="presentation" onClick={toggleDrawer(false)}>
+    <Box sx={{ width: 360, marginLeft: 5 }} role="presentation" onClick={toggleDrawer(false)}>
       <Form onFormSubmission={onFormSubmission} />
     </Box>
   );
