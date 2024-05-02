@@ -20,43 +20,6 @@
 
 ## Diagrams, Screenshots, Demos
 
-## Getting Started
-
-### To get the front end running locally:
-
-_1. Open your terminal (e.g., Terminal or GitBash)._
-
-_2. Navigate to where you want to place the cloned directory._
-
-_3. Clone the repository from the GitHub link by entering in this command:_
-
-> ```bash
-> $ git clone https://github.com/joncheng-dev/minimal-pairs
-> ```
-
-- _In the command line, while in the project's root directory `minimal-pairs`, run this command to install all packages and dependenies:_
-
-> ```bash
-> $ npm install
-> ```
-
-- _In the command line, while in the project's root directory `minimal-pairs`, run this command to compile and execute the web application. This will host the application locally. Access it at http://localhost:3000/._
-
-> ```bash
-> $ npm run start
-> ```
-
-- _To compile this web app and bundle the React code into the dist directory, enter:_
-
-> ```bash
-> $ npm run build
-> ```
-
-### To connect to Firestore database:
-
-- _1. I have a Firestore database running for the application to make requests to. Contact me for the Firebase config information._
-- _2. Create a `.env` file at the project's root directory. The config information will have to be entered here._
-
 ## Functionality Overview
 
 ### General functionality:
