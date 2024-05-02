@@ -200,7 +200,7 @@ export default function Control() {
       )}
       <div style={{ display: "flex", alignItems: "center", marginLeft: 5 }}>
         <LeftNav onFormSubmission={onFormSubmission} />
-        <h2 style={{ marginLeft: "10px" }}>Tree Diagram</h2>
+        <h2 style={{ marginLeft: "10px" }}>Minimal Pairs</h2>
       </div>
       {loading ? (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999 }}>
