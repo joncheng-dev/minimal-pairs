@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormGroup, FormLabel, Typography } from "@mui/material";
-import { Box, Button, Checkbox, InputLabel, ListItemText, MenuItem, OutlinedInput, Select } from "@mui/material";
+import { Box, Button, Checkbox, InputLabel, ListItemText, MenuItem, OutlinedInput, Paper, Select, Stack, Switch } from "@mui/material";
 import disableIncompatibleValues from "../util/disableIncompatibleValues";
 import { consonantCharList, vowelCharList } from "../data/characterLists";
 
@@ -141,13 +141,22 @@ export default function Form(props) {
   return (
     <>
       <h2>Form</h2>
-      <Box component="form" onSubmit={handleSubmit}>
+      <Box component="form" onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()}>
         <FormControl sx={{ m: 1, width: 300 }}>
-          <FormLabel>Category</FormLabel>
-          <RadioGroup row value={charCategory} onChange={(event) => setCharCategory(event.target.value)}>
-            <FormControlLabel data-testid="consonant-radio-button" value="consonants" control={<Radio />} label="Consonants" />
-            <FormControlLabel data-testid="vowel-radio-button" value="vowels" control={<Radio />} label="Vowels" />
-          </RadioGroup>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Typography style={{ flexGrow: 1, textAlign: "right" }}>Consonants</Typography>
+            {/* <Paper> */}
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={charCategory === "vowels"}
+                  onChange={() => setCharCategory((prevCategory) => (prevCategory === "consonants" ? "vowels" : "consonants"))}
+                />
+              }
+            />
+            {/* </Paper> */}
+            <Typography style={{ flexGrow: 1 }}>Vowels</Typography>
+          </Stack>
           <br />
           <Typography>Select two phonemes from the dropdown menu</Typography>
           {/* <InputLabel id="multiple-checkbox-label">Characters</InputLabel> */}
@@ -187,8 +196,6 @@ export default function Form(props) {
             ))}
           </Select>
         </FormControl>
-        <br />
-        <br />
         <Button type="submit" variant="contained" sx={{ m: 1, width: 300 }}>
           Submit
         </Button>
@@ -197,167 +204,9 @@ export default function Form(props) {
   );
 }
 
-// const handleDropDownChange = (event) => {
-//   const {
-//     target: { value },
-//   } = event;
-//   // console.log("Form, handleDropDownChange, value: ", value);
-//   const copiedVowelListState = [...vowelCharListState];
-//   let newVowelListState = null;
-//   console.log("Form, handleDropDownChange, event.target.value", event.target.value);
-//   // handles changing "isSelected" state from false / true
-//   newVowelListState = copiedVowelListState.map((vowel) => {
-//     if (vowel.char === event.target.value[0] && !vowel.disabled) {
-//       return {
-//         ...vowel,
-//         isSelected: !vowel.isSelected,
-//       };
-//     } else {
-//       return vowel;
-//     }
-//   });
-//   // newVowelListState = [
-//   // {
-//   //   char: "A",
-//   //   disabled: false,
-//   //   isSelected: false,
-//   // },
-//   // {
-//   //   char: "E",
-//   //   disabled: false,
-//   //   isSelected: false,
-//   // },
-//   // {
-//   //   char: "I",
-//   //   disabled: false,
-//   //   isSelected: true,
-//   // },
-//   // {
-//   //   char: "Y",
-//   //   disabled: false,
-//   //   isSelected: false,
-//   // },
-//   // ]
-
-//   // counts how many characters are currently selected by user
-//   const countSelectedChars = newVowelListState.filter((entry) => entry.isSelected).length;
-//   console.log("handleDropDownChange, countSelectedChars: ", countSelectedChars);
-//   // countSelectedChars = 1;
-
-//   if (countSelectedChars >= 2) {
-//     const updatedVowelListState = newVowelListState.map((vowel) => {
-//       if (vowel.isSelected) {
-//         return vowel;
-//       } else {
-//         return {
-//           ...vowel,
-//           disabled: true,
-//         };
-//       }
-//     });
-//     console.log("updatedVowelListState with all values disabled: ", updatedVowelListState);
-//     setVowelCharListState(updatedVowelListState);
-//   } else {
-//     const updatedVowelListState = newVowelListState.map((vowel) => {
-//       if (vowel.isSelected) {
-//         return vowel;
-//       } else {
-//         return {
-//           ...vowel,
-//           disabled: false,
-//         };
-//       }
-//     });
-//     // First, reenable everything.
-//     // if isSelected, leave it alone.
-//     // if !isSelected, enable it. --> disabled: false
-//     // Second, pass this array in to disabledIncompatibleValues.
-//     // Third, the result is now displayed to user.
-//     const disabledCharacterList = disableIncompatibleValues(updatedVowelListState);
-//     console.log("less than 2 chars selected, character list: ", disabledCharacterList);
-//     // if it is not in disabledVowelList, AND it is not currently selected, enable it.
-//     // disabledVowelList = [
-//     //   {
-//     //     char: "A",
-//     //     disabled: false,
-//     //     isSelected: true,
-//     //   },
-//     //   {
-//     //     char: "E",
-//     //     disabled: false,
-//     //     isSelected: false,
-//     //   },
-//     //   {
-//     //     char: "I",
-//     //     disabled: true,
-//     //     isSelected: false,
-//     //   },
-//     //   {
-//     //     char: "Y",
-//     //     disabled: true,
-//     //     isSelected: false,
-//     //   },
-//     // ];
-//     setVowelCharListState(disabledCharacterList);
-//     // Look in our disabledCharacterList, pick up the char values that have
-//     // currently "isSelected" being true
-//   }
-//   const selectedChars = disabledCharacterList.map((vowel) => {
-//     if (vowel.isSelected) {
-//       return vowel.char;
-//     } else {
-//       return;
-//     }
-//   });
-//   console.log("Form, handleDropDownChange, selectedChars: ", selectedChars);
-//   // setUserSelectedChars(typeof value === "string" ? value.split(",") : value);
-// };
-
-// characterList = [
-//   {
-//     char: "cons",
-//     disabled: false,
-//     isSelected: true,
-//   },
-//   {
-//     char: "E",
-//     disabled: false,
-//     isSelected: false,
-//   },
-//   {
-//     char: "A",
-//     disabled: false,
-//     isSelected: false,
-//   },
-// ];
-
-// phonemeDictionary = {
-//   A: {
-//     incompatibleCharacters: ["E"],
-//   },
-//   E: {
-//     incompatibleCharacters: ["cons"],
-//   },
-//   cons: {
-//     incompatibleCharacters: ["E", "null"],
-//   },
-// };
-
-// // Does it actually return an array?
-// disabledCharList = [
-//   {
-//     char: "cons",
-//     disabled: false,
-//     isSelected: true,
-//   },
-//   {
-//     char: "E",
-//     disabled: false,
-//     isSelected: false,
-//   },
-//   {
-//     char: "A",
-//     disabled: false,
-//     isSelected: false,
-//   },
-// ];
+{
+  /* <RadioGroup row value={charCategory} onChange={(event) => setCharCategory(event.target.value)}>
+            <FormControlLabel data-testid="consonant-radio-button" value="consonants" control={<Radio />} label="Consonants" />
+            <FormControlLabel data-testid="vowel-radio-button" value="vowels" control={<Radio />} label="Vowels" />
+          </RadioGroup> */
+}

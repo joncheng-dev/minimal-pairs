@@ -5,7 +5,8 @@ import db from "./../firebase";
 import Results from "./Results";
 import TreeDiagram from "./TreeDiagram";
 import TreeDiagramExpt from "./TreeDiagramExpt";
-import { Snackbar, SnackbarContent } from "@mui/material";
+import { Snackbar, SnackbarContent, Typography } from "@mui/material";
+import LeftNav from "./LeftNav";
 
 export default function Control() {
   const [notification, setNotificationOpen] = useState({
@@ -190,17 +191,18 @@ export default function Control() {
           <SnackbarContent message={notification.message} sx={{ bgcolor: notification.color }} />
         </Snackbar>
       )}
-      <h2>Tree Diagram</h2>
+      <div style={{ display: "flex", alignItems: "center", marginLeft: 5 }}>
+        <LeftNav onFormSubmission={onFormSubmission} />
+        <h2 style={{ marginLeft: "10px" }}>Tree Diagram</h2>
+      </div>
       {treeData && <TreeDiagramExpt treeData={treeData} treeDiagramName={treeDiagramName} />}
-      {notEnoughPairsMessage && <h3>{notEnoughPairsMessage}</h3>}
+      {notEnoughPairsMessage && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <h3>{notEnoughPairsMessage}</h3>
+        </div>
+      )}
       {/* {resultsToUI ? <Results results={resultsToUI} /> : ""} */}
-      <hr />
-      {/* prettier-ignore */}
-      <Form
-        onFormSubmission={onFormSubmission}
-        // collectValuesFromForm={collectValuesFromForm}
-      />
-      <hr />
+      {/* <Form onFormSubmission={onFormSubmission} /> */}
     </>
   );
 }
