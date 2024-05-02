@@ -7,6 +7,7 @@ import TreeDiagram from "./TreeDiagram";
 import TreeDiagramExpt from "./TreeDiagramExpt";
 import { Snackbar, SnackbarContent, Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import LinearProgress from "@mui/material/LinearProgress";
 import LeftNav from "./LeftNav";
 
 export default function Control() {
@@ -202,10 +203,13 @@ export default function Control() {
         <h2 style={{ marginLeft: "10px" }}>Tree Diagram</h2>
       </div>
       {loading ? (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <CircularProgress />
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999 }}>
+          <LinearProgress />
         </div>
-      ) : treeData ? (
+      ) : // <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
+      //   <CircularProgress style={{ marginTop: "-15vh" }} />
+      // </div>
+      treeData ? (
         <TreeDiagramExpt treeData={treeData} treeDiagramName={treeDiagramName} />
       ) : null}
       {notEnoughPairsMessage && (
