@@ -6,6 +6,7 @@ import Results from "./Results";
 import TreeDiagram from "./TreeDiagram";
 import TreeDiagramExpt from "./TreeDiagramExpt";
 import { Snackbar, SnackbarContent, Typography } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import LeftNav from "./LeftNav";
 
 export default function Control() {
@@ -24,6 +25,7 @@ export default function Control() {
   // const [category, setCategory] = useState(null);
   // const [userQuery, setUserQuery] = useState(null);
   // const [numPairsInTree, setNumPairsInTree] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [treeDiagramName, setTreeDiagramName] = useState(null);
   const [treeData, setTreeData] = useState(null);
   const [resultsToUI, setResultsToUI] = useState(null);
@@ -115,6 +117,7 @@ export default function Control() {
   //
 
   async function gatherAndFilterResults(category, query, numPairs) {
+    setLoading(true);
     if (category && query) {
       const queryOne = query[0] + query[1];
       const queryTwo = query[1] + query[0];
@@ -129,6 +132,7 @@ export default function Control() {
           const dataKeys = docSnap.data();
           if (dataKeys.pairs.length === 0) {
             setNotEnoughPairsMessage(`You've selected ${query[0]} and ${query[1]}, but there are no results to display.`);
+            setLoading(false);
             return;
           }
           if (numPairs >= dataKeys.pairs.length) {
@@ -145,11 +149,13 @@ export default function Control() {
           }
           // console.log("Control, gatherAndFilterResults, arrayOfSelectedIds: ", arrayOfSelectedIds);
           filterDocResults(docSnap.data(), arrayOfSelectedIds);
+          setLoading(false);
           return; // Stop searching after finding a match
         }
       }
       console.log("No such document!");
       setNotificationOpen({ ...notification, open: true, message: "No results for this combination of phonemes.", color: "#ff0f0f" });
+      setLoading(false);
     }
   }
 
@@ -195,7 +201,13 @@ export default function Control() {
         <LeftNav onFormSubmission={onFormSubmission} />
         <h2 style={{ marginLeft: "10px" }}>Tree Diagram</h2>
       </div>
-      {treeData && <TreeDiagramExpt treeData={treeData} treeDiagramName={treeDiagramName} />}
+      {loading ? (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <CircularProgress />
+        </div>
+      ) : treeData ? (
+        <TreeDiagramExpt treeData={treeData} treeDiagramName={treeDiagramName} />
+      ) : null}
       {notEnoughPairsMessage && (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <h3>{notEnoughPairsMessage}</h3>
