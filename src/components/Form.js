@@ -149,7 +149,7 @@ export default function Form(props) {
             <FormControlLabel data-testid="vowel-radio-button" value="vowels" control={<Radio />} label="Vowels" />
           </RadioGroup>
           <br />
-          <Typography>Select the phonemes</Typography>
+          <Typography>Select two phonemes from the dropdown menu</Typography>
           {/* <InputLabel id="multiple-checkbox-label">Characters</InputLabel> */}
           <Select
             labelId="multiple-checkbox-label"
