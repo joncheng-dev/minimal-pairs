@@ -5,7 +5,7 @@ import { useCenteredTree } from "./TreeHelper";
 
 const containerStyles = {
   width: "100vw",
-  height: "60vh",
+  height: "80vh",
 };
 
 const drawBinaryTree = (title, childrenWords) => {
