@@ -23,9 +23,6 @@ export default function Control() {
   // 2 rows is 3 pairs of words,
   // 3 rows is 7 pairs of words,
   // 4 rows is 15 pairs of words
-  // const [category, setCategory] = useState(null);
-  // const [userQuery, setUserQuery] = useState(null);
-  // const [numPairsInTree, setNumPairsInTree] = useState(null);
   const [loading, setLoading] = useState(false);
   const [treeDiagramName, setTreeDiagramName] = useState(null);
   const [treeData, setTreeData] = useState(null);
