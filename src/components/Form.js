@@ -30,11 +30,11 @@ export default function Form(props) {
   // How many pairs should be shown in results tree?
   const [numRowsToShow, setNumRowsToShow] = useState("(make a selection)");
 
-  useEffect(() => {
-    console.log("Form, charCategory: ", charCategory);
-    console.log("Form, userSelectedChars: ", userSelectedChars);
-    console.log("Form, numRowsToShow: ", numRowsToShow);
-  }, []);
+  // useEffect(() => {
+  //   console.log("Form, charCategory: ", charCategory);
+  //   console.log("Form, userSelectedChars: ", userSelectedChars);
+  //   console.log("Form, numRowsToShow: ", numRowsToShow);
+  // }, []);
 
   useEffect(() => {
     // Sets dropdown select options -- Does this if charCategory changes
@@ -76,7 +76,7 @@ export default function Form(props) {
     });
     // counts how many characters are currently selected by user
     const countSelectedChars = characterListState.filter((entry) => entry.isSelected).length;
-    console.log("handleDropDownChange, countSelectedChars: ", countSelectedChars);
+    // console.log("handleDropDownChange, countSelectedChars: ", countSelectedChars);
 
     if (countSelectedChars >= 2) {
       const updatedCharListState = characterListState.map((phoneme) => {
@@ -89,7 +89,7 @@ export default function Form(props) {
           };
         }
       });
-      console.log("2 boxes checked, all remaining boxes disabled: ", updatedCharListState);
+      // console.log("2 boxes checked, all remaining boxes disabled: ", updatedCharListState);
       setCharListState(updatedCharListState);
     } else if (countSelectedChars === 1) {
       const updatedCharListState = characterListState.map((phoneme) => {
@@ -102,9 +102,9 @@ export default function Form(props) {
           };
         }
       });
-      console.log("1 box checked, before incompatible values filtered: ", updatedCharListState);
+      // console.log("1 box checked, before incompatible values filtered: ", updatedCharListState);
       const disabledCharacterList = disableIncompatibleValues(updatedCharListState, charCategory);
-      console.log("1 box checked, after incompatible values filtered: ", disabledCharacterList);
+      // console.log("1 box checked, after incompatible values filtered: ", disabledCharacterList);
 
       setCharListState(disabledCharacterList);
     } else {
@@ -114,7 +114,7 @@ export default function Form(props) {
           disabled: false,
         };
       });
-      console.log("0 boxes checked, all characters should be enabled: ", updatedCharListState);
+      // console.log("0 boxes checked, all characters should be enabled: ", updatedCharListState);
       setCharListState(updatedCharListState);
     }
   };
@@ -126,7 +126,7 @@ export default function Form(props) {
       //prettier-ignore
       .filter((phoneme) => phoneme.isSelected)
       .map((phoneme) => phoneme.char);
-    console.log("handleSubmit, selectedChars: ", selectedChars);
+    // console.log("handleSubmit, selectedChars: ", selectedChars);
     // setUserSelectedChars(selectedChars);
 
     const collectedValues = {
