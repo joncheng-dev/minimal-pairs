@@ -184,7 +184,7 @@ export default function Control() {
   };
 
   return (
-    <>
+    <div style={{display: "flex"}}>
       {notification.open && (
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -195,9 +195,9 @@ export default function Control() {
           <SnackbarContent message={notification.message} sx={{ bgcolor: notification.color }} />
         </Snackbar>
       )}
-      <div style={{ display: "flex", alignItems: "center", marginLeft: 5 }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginLeft: 5 }}>
         <LeftNav onFormSubmission={onFormSubmission} />
-        <h2 style={{ marginLeft: "10px" }}>Minimal Pairs</h2>
+        {/* <h2 style={{ marginLeft: "10px" }}>Minimal Pairs</h2> */}
       </div>
       {loading ? (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999 }}>
@@ -216,6 +216,6 @@ export default function Control() {
       )}
       {/* {resultsToUI ? <Results results={resultsToUI} /> : ""} */}
       {/* <Form onFormSubmission={onFormSubmission} /> */}
-    </>
+    </div>
   );
 }

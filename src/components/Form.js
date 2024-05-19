@@ -3,6 +3,8 @@ import { Radio, RadioGroup, FormControlLabel, FormControl, FormGroup, FormLabel,
 import { Box, Button, Checkbox, InputLabel, ListItemText, MenuItem, OutlinedInput, Paper, Select, Stack, Switch } from "@mui/material";
 import disableIncompatibleValues from "../util/disableIncompatibleValues";
 import { consonantCharList, vowelCharList } from "../data/characterLists";
+import { alpha, styled } from '@mui/material/styles';
+import { pink, blue } from '@mui/material/colors';
 
 // Style
 const ITEM_HEIGHT = 48;
@@ -15,6 +17,27 @@ const MenuProps = {
     },
   },
 };
+
+const PinkSwitch = styled(Switch)(({ theme }) => ({
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    color: pink[600],
+    '&:hover': {
+      backgroundColor: alpha(pink[600], theme.palette.action.hoverOpacity),
+    },
+  },
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+    backgroundColor: pink[600],
+  },
+   '& .MuiSwitch-switchBase': {
+    color: blue[600], // Color of the switch when it's off
+  },
+  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+    backgroundColor: blue[600], // Color of the track when switch is off
+  },
+  '& .MuiSwitch-switchBase.Mui-disabled + .MuiSwitch-track': {
+    backgroundColor: alpha(blue[600], 0.4), // Adjust opacity for disabled track when switch is off
+  },
+}));
 
 export default function Form(props) {
   const { onFormSubmission } = props;
@@ -140,7 +163,7 @@ export default function Form(props) {
 
   return (
     <>
-      <h2>Form</h2>
+      <h2>Minimal Pairs</h2>
       <Box component="form" onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()}>
         <FormControl sx={{ m: 1, width: 300 }}>
           <Stack direction="row" spacing={2} alignItems="center">
@@ -148,7 +171,7 @@ export default function Form(props) {
             {/* <Paper> */}
             <FormControlLabel
               control={
-                <Switch
+                <PinkSwitch
                   checked={charCategory === "vowels"}
                   onChange={() => setCharCategory((prevCategory) => (prevCategory === "consonants" ? "vowels" : "consonants"))}
                 />
