@@ -11,7 +11,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Form from "./Form";
 
 export default function LeftNav(props) {
-  const { onFormSubmission } = props;
+  const { onFormSubmission, setNotificationOpen } = props;
   const [open, setOpen] = useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -20,7 +20,7 @@ export default function LeftNav(props) {
 
   const DrawerList = (
     <Box sx={{ width: 360, marginLeft: 5 }} role="presentation" onClick={toggleDrawer(false)}>
-      <Form onFormSubmission={onFormSubmission} />
+      <Form onFormSubmission={onFormSubmission} setNotificationOpen={setNotificationOpen} />
     </Box>
   );
 

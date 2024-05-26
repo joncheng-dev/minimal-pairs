@@ -184,7 +184,7 @@ export default function Control() {
   };
 
   return (
-    <div style={{display: "flex"}}>
+    <div style={{ display: "flex" }}>
       {notification.open && (
         <Snackbar
           anchorOrigin={{ vertical: "top", horizontal: "center" }}
@@ -196,7 +196,7 @@ export default function Control() {
         </Snackbar>
       )}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginLeft: 5 }}>
-        <LeftNav onFormSubmission={onFormSubmission} />
+        <LeftNav onFormSubmission={onFormSubmission} setNotificationOpen={setNotificationOpen} />
         {/* <h2 style={{ marginLeft: "10px" }}>Minimal Pairs</h2> */}
       </div>
       {loading ? (

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Radio, RadioGroup, FormControlLabel, FormControl, FormGroup, FormLabel, Typography } from "@mui/material";
-import { Box, Button, Checkbox, InputLabel, ListItemText, MenuItem, OutlinedInput, Paper, Select, Stack, Switch } from "@mui/material";
+import { Radio, RadioGroup, FormControlLabel, FormControl, FormGroup, FormLabel, Grid, Typography } from "@mui/material";
+import { Box, Button, Checkbox, InputLabel, ListItemText, MenuItem, OutlinedInput, Paper, Select, Stack, Switch, Tooltip } from "@mui/material";
+import { InfoOutlined } from "@mui/icons-material";
 import disableIncompatibleValues from "../util/disableIncompatibleValues";
 import { consonantCharList, vowelCharList } from "../data/characterLists";
-import { alpha, styled } from '@mui/material/styles';
-import { pink, blue } from '@mui/material/colors';
+import { alpha, styled } from "@mui/material/styles";
+import { pink, blue } from "@mui/material/colors";
 
 // Style
 const ITEM_HEIGHT = 48;
@@ -19,28 +20,28 @@ const MenuProps = {
 };
 
 const PinkSwitch = styled(Switch)(({ theme }) => ({
-  '& .MuiSwitch-switchBase.Mui-checked': {
+  "& .MuiSwitch-switchBase.Mui-checked": {
     color: pink[600],
-    '&:hover': {
+    "&:hover": {
       backgroundColor: alpha(pink[600], theme.palette.action.hoverOpacity),
     },
   },
-  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+  "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
     backgroundColor: pink[600],
   },
-   '& .MuiSwitch-switchBase': {
+  "& .MuiSwitch-switchBase": {
     color: blue[600], // Color of the switch when it's off
   },
-  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+  "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
     backgroundColor: blue[600], // Color of the track when switch is off
   },
-  '& .MuiSwitch-switchBase.Mui-disabled + .MuiSwitch-track': {
+  "& .MuiSwitch-switchBase.Mui-disabled + .MuiSwitch-track": {
     backgroundColor: alpha(blue[600], 0.4), // Adjust opacity for disabled track when switch is off
   },
 }));
 
 export default function Form(props) {
-  const { onFormSubmission } = props;
+  const { onFormSubmission, setNotificationOpen } = props;
   const { collectValuesFromForm } = props;
   // Try putting these values inherently in the Form component rather than parent
   const arrayOfRowsToDisplay = ["(make a selection)", "1", "2", "3", "4"];
@@ -52,12 +53,6 @@ export default function Form(props) {
   const [userSelectedChars, setUserSelectedChars] = useState([]);
   // How many pairs should be shown in results tree?
   const [numRowsToShow, setNumRowsToShow] = useState("(make a selection)");
-
-  // useEffect(() => {
-  //   console.log("Form, charCategory: ", charCategory);
-  //   console.log("Form, userSelectedChars: ", userSelectedChars);
-  //   console.log("Form, numRowsToShow: ", numRowsToShow);
-  // }, []);
 
   useEffect(() => {
     // Sets dropdown select options -- Does this if charCategory changes
@@ -78,11 +73,6 @@ export default function Form(props) {
     const {
       target: { value },
     } = event;
-    // console.log("Form, handleDropDownChange, value: ", value);
-    // setUserSelectedChars(
-    //   // On autofill we get a stringified value.
-    //   typeof value === "string" ? value.split(",") : value
-    // );
     const copiedCharListState = [...charListState];
     let characterListState = null;
     console.log("Form, handleDropDownChange, event.target.value", event.target.value);
@@ -99,7 +89,6 @@ export default function Form(props) {
     });
     // counts how many characters are currently selected by user
     const countSelectedChars = characterListState.filter((entry) => entry.isSelected).length;
-    // console.log("handleDropDownChange, countSelectedChars: ", countSelectedChars);
 
     if (countSelectedChars >= 2) {
       const updatedCharListState = characterListState.map((phoneme) => {
@@ -152,18 +141,60 @@ export default function Form(props) {
     // console.log("handleSubmit, selectedChars: ", selectedChars);
     // setUserSelectedChars(selectedChars);
 
+    console.log("selectedChars.length: ", selectedChars.length);
+    console.log("numRowsToShow: ", numRowsToShow);
+
     const collectedValues = {
       charCategory,
       selectedChars,
       // userSelectedChars,
       numRowsToShow,
     };
-    onFormSubmission(collectedValues);
+    if (selectedChars.length === 1 && numRowsToShow !== "(make a selection)") {
+      setNotificationOpen({
+        open: true,
+        vertical: "top",
+        horizontal: "center",
+        message: "You've selected one phoneme. Please select two before submitting.",
+        color: "#ff0f0f",
+      });
+    } else if (selectedChars.length !== 2 || numRowsToShow === "(make a selection)") {
+      setNotificationOpen({
+        open: true,
+        vertical: "top",
+        horizontal: "center",
+        message: "Please complete the form before submitting.",
+        color: "#ff0f0f",
+      });
+    } else if (selectedChars.length === 2 && numRowsToShow !== "(make a selection)") {
+      onFormSubmission(collectedValues);
+    } else {
+      setNotificationOpen({
+        open: true,
+        vertical: "top",
+        horizontal: "center",
+        message: "Error.",
+        color: "#ff0f0f",
+      });
+    }
   };
+
+  const tooltipText = "Complete the form to draw a tree diagram.";
+  const phonemeToolTipText = "Select two phonemes from the dropdown menu.";
+  const rowsToolTipText = "Select the number of rows you'd like to view.";
 
   return (
     <>
-      <h2>Minimal Pairs</h2>
+      <Grid container mt={2} mb={2}>
+        <Grid item>
+          <Typography variant="h5">Minimal Pairs</Typography>
+        </Grid>
+        <Grid item>
+          <Tooltip title={tooltipText} placement="right">
+            <InfoOutlined fontSize="small" />
+          </Tooltip>
+        </Grid>
+      </Grid>
       <Box component="form" onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()}>
         <FormControl sx={{ m: 1, width: 300 }}>
           <Stack direction="row" spacing={2} alignItems="center">
@@ -182,7 +213,27 @@ export default function Form(props) {
           </Stack>
           <br />
           <br />
-          <Typography>Select two phonemes from the dropdown menu</Typography>
+          <div style={{ width: "fit-content", marginLeft: -8 }}>
+            <Tooltip
+              title={phonemeToolTipText}
+              placement="right"
+              PopperProps={{
+                disablePortal: true,
+                modifiers: [
+                  {
+                    name: "offset",
+                    options: {
+                      offset: [0, -5], // Adjust the offset as needed
+                    },
+                  },
+                ],
+              }}
+            >
+              <Button sx={{ "&:hover": { backgroundColor: "transparent", cursor: "pointer" } }} disableRipple>
+                Phonemes
+              </Button>
+            </Tooltip>
+          </div>
           {/* <InputLabel id="multiple-checkbox-label">Characters</InputLabel> */}
           <Select
             labelId="multiple-checkbox-label"
@@ -203,9 +254,29 @@ export default function Form(props) {
           </Select>
         </FormControl>
         <br />
-        <br />
-        {/* <Typography>Select the phonemes:</Typography> */}
-        <InputLabel>Select the number of rows you'd like to view</InputLabel>
+        <Tooltip
+          title={rowsToolTipText}
+          placement="right"
+          PopperProps={{
+            disablePortal: true,
+            modifiers: [
+              {
+                name: "offset",
+                options: {
+                  // offset: [-2, -245], // Adjust the offset as needed
+                },
+              },
+            ],
+          }}
+        >
+          <Button ml={1} sx={{ "&:hover": { backgroundColor: "transparent", cursor: "pointer" } }} disableRipple>
+            Rows
+          </Button>
+          {/* <Typography variant="body1" ml={1}>
+            Rows
+          </Typography> */}
+        </Tooltip>
+
         <FormControl sx={{ m: 1, width: 300 }}>
           <Select
             defaultValue={"(make a selection)"}
