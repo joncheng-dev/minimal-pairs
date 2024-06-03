@@ -16,7 +16,7 @@ export default function Control() {
     vertical: "top",
     horizontal: "center",
     message: "No results for this combination of phonemes.",
-    color: "#ff0f0f",
+    color: "#3499e8",
   });
   // TODO refactor to allow any numbers of pairs up to 15 pairs maximum?
   // 1 row is 1 pair of words,
@@ -27,7 +27,6 @@ export default function Control() {
   const [treeDiagramName, setTreeDiagramName] = useState(null);
   const [treeData, setTreeData] = useState(null);
   const [resultsToUI, setResultsToUI] = useState(null);
-  const [notEnoughPairsMessage, setNotEnoughPairsMessage] = useState(null);
   const initialRender = useRef(true);
 
   // Functions
@@ -129,19 +128,25 @@ export default function Control() {
           let arrayOfSelectedIds;
           const dataKeys = docSnap.data();
           if (dataKeys.pairs.length === 0) {
-            setNotEnoughPairsMessage(`You've selected ${query[0]} and ${query[1]}, but there are no results to display.`);
+            // setNotEnoughPairsMessage(`You've selected ${query[0]} and ${query[1]}, but there are no results to display.`);
+            setNotificationOpen({
+              ...notification,
+              open: true,
+              message: `You've selected ${query[0]} and ${query[1]}, but there are no results to display.`,
+            });
             setLoading(false);
             return;
           }
           if (numPairs >= dataKeys.pairs.length) {
             arrayOfSelectedIds = randomPairPicker(dataKeys.pairs.length, dataKeys.pairs.length);
-            setNotEnoughPairsMessage(
-              `You've selected ${numPairsToRows(numPairs)} rows (i.e. ${numPairs} pairs) to show, but there are only ${
+            setNotificationOpen({
+              ...notification,
+              open: true,
+              message: `You've selected ${numPairsToRows(numPairs)} rows (i.e. ${numPairs} pairs) to show, but there are only ${
                 dataKeys.pairs.length
-              } pairs available.`
-            );
+              } pairs available.`,
+            });
           } else {
-            setNotEnoughPairsMessage(null);
             // Before setting results to UI, randomly select and filter them.
             arrayOfSelectedIds = randomPairPicker(dataKeys.pairs.length, numPairs);
           }
@@ -152,7 +157,7 @@ export default function Control() {
         }
       }
       console.log("No such document!");
-      setNotificationOpen({ ...notification, open: true, message: "No results for this combination of phonemes.", color: "#ff0f0f" });
+      setNotificationOpen({ ...notification, open: true, message: "No results for this combination of phonemes." });
       setLoading(false);
     }
   }
@@ -209,13 +214,6 @@ export default function Control() {
       treeData ? (
         <TreeDiagramExpt treeData={treeData} treeDiagramName={treeDiagramName} />
       ) : null}
-      {notEnoughPairsMessage && (
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <h3>{notEnoughPairsMessage}</h3>
-        </div>
-      )}
-      {/* {resultsToUI ? <Results results={resultsToUI} /> : ""} */}
-      {/* <Form onFormSubmission={onFormSubmission} /> */}
     </div>
   );
 }

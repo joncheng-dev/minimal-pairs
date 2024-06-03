@@ -153,28 +153,22 @@ export default function Form(props) {
     if (selectedChars.length === 1 && numRowsToShow !== "(make a selection)") {
       setNotificationOpen({
         open: true,
-        vertical: "top",
-        horizontal: "center",
         message: "You've selected one phoneme. Please select two before submitting.",
-        color: "#ff0f0f",
+        color: "#3499e8",
       });
     } else if (selectedChars.length !== 2 || numRowsToShow === "(make a selection)") {
       setNotificationOpen({
         open: true,
-        vertical: "top",
-        horizontal: "center",
         message: "Please complete the form before submitting.",
-        color: "#ff0f0f",
+        color: "#3499e8",
       });
     } else if (selectedChars.length === 2 && numRowsToShow !== "(make a selection)") {
       onFormSubmission(collectedValues);
     } else {
       setNotificationOpen({
         open: true,
-        vertical: "top",
-        horizontal: "center",
         message: "Error.",
-        color: "#ff0f0f",
+        color: "#3499e8",
       });
     }
   };
