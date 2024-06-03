@@ -1,11 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormGroup, FormLabel, Grid, Typography } from "@mui/material";
-import { Box, Button, Checkbox, InputLabel, ListItemText, MenuItem, OutlinedInput, Paper, Select, Stack, Switch, Tooltip } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  IconButton,
+  InputLabel,
+  ListItemText,
+  MenuItem,
+  OutlinedInput,
+  Paper,
+  Select,
+  Stack,
+  Switch,
+  Tooltip,
+} from "@mui/material";
 import { InfoOutlined } from "@mui/icons-material";
 import disableIncompatibleValues from "../util/disableIncompatibleValues";
 import { consonantCharList, vowelCharList } from "../data/characterLists";
 import { alpha, styled } from "@mui/material/styles";
 import { pink, blue } from "@mui/material/colors";
+import BasicModal from "./BasicModal";
 
 // Style
 const ITEM_HEIGHT = 48;
@@ -179,14 +194,12 @@ export default function Form(props) {
 
   return (
     <>
-      <Grid container mt={2} mb={2}>
+      <Grid container mt={2} mb={2} display="flex">
         <Grid item>
           <Typography variant="h5">Minimal Pairs</Typography>
         </Grid>
-        <Grid item>
-          <Tooltip title={tooltipText} placement="right">
-            <InfoOutlined fontSize="small" />
-          </Tooltip>
+        <Grid item alignItems="flex-start">
+          <BasicModal />
         </Grid>
       </Grid>
       <Box component="form" onSubmit={handleSubmit} onClick={(e) => e.stopPropagation()}>
