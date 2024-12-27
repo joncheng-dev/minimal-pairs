@@ -74,6 +74,16 @@ function TreeDiagramExpt(props) {
           leafNodeClassName="node__leaf"
           renderCustomNodeElement={renderRectSvgNode}
           svgClassName="tree"
+          pathFunc="step"
+          separation={{
+            nonSiblings: 0.9,
+            siblings: 0.7
+          }}
+          depthFactor="75"
+          scaleExtent={{
+            max: 1.5,
+            min: 0.1
+          }}
         />
       </div>
     </>
