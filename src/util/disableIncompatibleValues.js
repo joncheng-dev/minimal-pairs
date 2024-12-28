@@ -236,7 +236,7 @@ const phonemeDictionaryCons = {
 
 export default function disableIncompatibleValues(characterList, charCategory) {
   let modifiedCharList = [...characterList];
-  console.log("disableIncompatibleValues, modifiedCharList: ", modifiedCharList);
+  // console.log("disableIncompatibleValues, modifiedCharList: ", modifiedCharList);
   // Find that one phoneme where "isSelected: true"
   const selectedPhoneme = characterList.find((phoneme) => phoneme.isSelected === true);
   //  selectedPhoneme = {

@@ -80,7 +80,7 @@ export default function Form(props) {
   const handleDropDownChange = (event) => {
     const copiedCharListState = [...charListState];
     let characterListState = null;
-    console.log("Form, handleDropDownChange, event.target.value", event.target.value);
+    // console.log("Form, handleDropDownChange, event.target.value", event.target.value);
     // handles changing "isSelected" state from false / true
     characterListState = copiedCharListState.map((phoneme) => {
       if (phoneme.char === event.target.value[0] && !phoneme.disabled) {
@@ -144,8 +144,8 @@ export default function Form(props) {
       .filter((phoneme) => phoneme.isSelected)
       .map((phoneme) => phoneme.char);
 
-    console.log("selectedChars.length: ", selectedChars.length);
-    console.log("numRowsToShow: ", numRowsToShow);
+    // console.log("selectedChars.length: ", selectedChars.length);
+    // console.log("numRowsToShow: ", numRowsToShow);
 
     const collectedValues = {
       charCategory,

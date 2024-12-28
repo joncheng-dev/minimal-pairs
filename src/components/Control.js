@@ -66,10 +66,10 @@ export default function Control() {
 
   // Use this to filter the document using randomized values
   function filterDocResults(document, arrayOfSelectedIds) {
-    console.log("filterDocResults, document: ", document);
-    console.log("filterDocResults, arrayOfSelectedIds: ", arrayOfSelectedIds);
+    // console.log("filterDocResults, document: ", document);
+    // console.log("filterDocResults, arrayOfSelectedIds: ", arrayOfSelectedIds);
     const filteredResults = arrayOfSelectedIds.map((index) => document.pairs[index]);
-    console.log("Control, filterDocResults, filteredResults: ", filteredResults);
+    // console.log("Control, filterDocResults, filteredResults: ", filteredResults);
     setTreeData(filteredResults);
   }
 
@@ -116,7 +116,7 @@ export default function Control() {
           return; // Stop searching after finding a match
         }
       }
-      console.log("No such document!");
+      // console.log("No such document!");
       setNotificationOpen({ ...notification, open: true, message: "No results for this combination of phonemes." });
       setLoading(false);
     }
@@ -129,10 +129,10 @@ export default function Control() {
   function onFormSubmission(collectedValues) {
     clearTreeDrawing();
 
-    console.log("Control, onFormSubmission, collectedValues.charCategory: ", collectedValues.charCategory);
-    console.log("Control, onFormSubmission, collectedValues.selectedChars: ", collectedValues.selectedChars);
-    console.log("Control, onFormSubmission, collectedValues.selectedChars[0]: ", collectedValues.selectedChars[0]);
-    console.log("Control, onFormSubmission, collectedValues.selectedChars[1]: ", collectedValues.selectedChars[1]);
+    // console.log("Control, onFormSubmission, collectedValues.charCategory: ", collectedValues.charCategory);
+    // console.log("Control, onFormSubmission, collectedValues.selectedChars: ", collectedValues.selectedChars);
+    // console.log("Control, onFormSubmission, collectedValues.selectedChars[0]: ", collectedValues.selectedChars[0]);
+    // console.log("Control, onFormSubmission, collectedValues.selectedChars[1]: ", collectedValues.selectedChars[1]);
 
     // Take the data from the user -- category, query, number pairs
     // Trigger a database query
