@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Radio, RadioGroup, FormControlLabel, FormControl, FormGroup, FormLabel, Grid, Typography } from "@mui/material";
+import { FormControlLabel, FormControl, Grid, Typography } from "@mui/material";
 import {
   Box,
   Button,
   Checkbox,
-  IconButton,
-  InputLabel,
   ListItemText,
   MenuItem,
   OutlinedInput,
-  Paper,
   Select,
   Stack,
   Switch,
   Tooltip,
 } from "@mui/material";
-import { InfoOutlined } from "@mui/icons-material";
 import disableIncompatibleValues from "../util/disableIncompatibleValues";
 import { consonantCharList, vowelCharList } from "../data/characterLists";
 import { alpha, styled } from "@mui/material/styles";
@@ -42,22 +38,19 @@ const PinkSwitch = styled(Switch)(({ theme }) => ({
     },
   },
   "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-    backgroundColor: pink[600],
+    backgroundColor: blue[600], // Choose the color here
   },
   "& .MuiSwitch-switchBase": {
     color: blue[600], // Color of the switch when it's off
-  },
-  "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-    backgroundColor: blue[600], // Color of the track when switch is off
   },
   "& .MuiSwitch-switchBase.Mui-disabled + .MuiSwitch-track": {
     backgroundColor: alpha(blue[600], 0.4), // Adjust opacity for disabled track when switch is off
   },
 }));
 
+
 export default function Form(props) {
   const { onFormSubmission, setNotificationOpen } = props;
-  const { collectValuesFromForm } = props;
   // Try putting these values inherently in the Form component rather than parent
   const arrayOfRowsToDisplay = ["(make a selection)", "1", "2", "3", "4"];
 
@@ -85,9 +78,6 @@ export default function Form(props) {
   }, [charCategory]);
 
   const handleDropDownChange = (event) => {
-    const {
-      target: { value },
-    } = event;
     const copiedCharListState = [...charListState];
     let characterListState = null;
     console.log("Form, handleDropDownChange, event.target.value", event.target.value);
@@ -153,8 +143,6 @@ export default function Form(props) {
       //prettier-ignore
       .filter((phoneme) => phoneme.isSelected)
       .map((phoneme) => phoneme.char);
-    // console.log("handleSubmit, selectedChars: ", selectedChars);
-    // setUserSelectedChars(selectedChars);
 
     console.log("selectedChars.length: ", selectedChars.length);
     console.log("numRowsToShow: ", numRowsToShow);
@@ -188,7 +176,6 @@ export default function Form(props) {
     }
   };
 
-  const tooltipText = "Complete the form to draw a tree diagram.";
   const phonemeToolTipText = "Select two phonemes from the dropdown menu.";
   const rowsToolTipText = "Select the number of rows you'd like to view.";
 
@@ -206,7 +193,6 @@ export default function Form(props) {
         <FormControl sx={{ m: 1, width: 300 }}>
           <Stack direction="row" spacing={2} alignItems="center">
             <Typography style={{ flexGrow: 1, textAlign: "right" }}>Consonants</Typography>
-            {/* <Paper> */}
             <FormControlLabel
               control={
                 <PinkSwitch
@@ -215,7 +201,6 @@ export default function Form(props) {
                 />
               }
             />
-            {/* </Paper> */}
             <Typography style={{ flexGrow: 1 }}>Vowels</Typography>
           </Stack>
           <br />
@@ -241,7 +226,6 @@ export default function Form(props) {
               </Button>
             </Tooltip>
           </div>
-          {/* <InputLabel id="multiple-checkbox-label">Characters</InputLabel> */}
           <Select
             labelId="multiple-checkbox-label"
             id="multiple-checkbox-label"
@@ -279,9 +263,6 @@ export default function Form(props) {
           <Button ml={1} sx={{ "&:hover": { backgroundColor: "transparent", cursor: "pointer" } }} disableRipple>
             Rows
           </Button>
-          {/* <Typography variant="body1" ml={1}>
-            Rows
-          </Typography> */}
         </Tooltip>
 
         <FormControl sx={{ m: 1, width: 300 }}>
@@ -307,11 +288,4 @@ export default function Form(props) {
       </Box>
     </>
   );
-}
-
-{
-  /* <RadioGroup row value={charCategory} onChange={(event) => setCharCategory(event.target.value)}>
-            <FormControlLabel data-testid="consonant-radio-button" value="consonants" control={<Radio />} label="Consonants" />
-            <FormControlLabel data-testid="vowel-radio-button" value="vowels" control={<Radio />} label="Vowels" />
-          </RadioGroup> */
 }

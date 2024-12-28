@@ -1,12 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
-import Form from "./Form";
+import React, { useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import db from "./../firebase";
-import Results from "./Results";
 import TreeDiagram from "./TreeDiagram";
-import TreeDiagramExpt from "./TreeDiagramExpt";
-import { Snackbar, SnackbarContent, Typography } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Snackbar, SnackbarContent } from "@mui/material";
 import LinearProgress from "@mui/material/LinearProgress";
 import LeftNav from "./LeftNav";
 
@@ -26,8 +22,6 @@ export default function Control() {
   const [loading, setLoading] = useState(false);
   const [treeDiagramName, setTreeDiagramName] = useState(null);
   const [treeData, setTreeData] = useState(null);
-  const [resultsToUI, setResultsToUI] = useState(null);
-  const initialRender = useRef(true);
 
   // Functions
   function getNumPairsInTree(numRowsToShow) {
@@ -74,44 +68,10 @@ export default function Control() {
   function filterDocResults(document, arrayOfSelectedIds) {
     console.log("filterDocResults, document: ", document);
     console.log("filterDocResults, arrayOfSelectedIds: ", arrayOfSelectedIds);
-    // const filteredResults = Object.fromEntries(Object.entries(document).filter(([key]) => convertedArray.includes(String(key))));
     const filteredResults = arrayOfSelectedIds.map((index) => document.pairs[index]);
     console.log("Control, filterDocResults, filteredResults: ", filteredResults);
     setTreeData(filteredResults);
-    setResultsToUI(filteredResults);
   }
-
-  // useEffect(() => {
-  //   const tempDbQuery = async () => {
-  //     const docRef = doc(db, "vowels", "eu");
-  //     const docSnap = await getDoc(docRef);
-  //     if (docSnap.exists()) {
-  //       console.log("eu: ", docSnap.data());
-  //       const dataKeys = docSnap.data();
-  //       // console.log(dataKeys.pairs.length); // This is the number of pairs in a document.
-  //       // Let's try console logging the pair at this doc, at index 1.
-  //       console.log("eu, pair at Index 1, dataKeys.pairs[1]: ", dataKeys.pairs[1]);
-  //       console.log("eu, pair at Index 1, firstWord, dataKeys.pairs[1].firstWord: ", dataKeys.pairs[1].firstWord);
-  //       console.log("eu, pair at Index 1, secondWord, dataKeys.pairs[1].secondWord: ", dataKeys.pairs[1].secondWord);
-  //       gatherAndFilterResults("vowels", "eu", 3);
-  //     }
-  //   };
-  //   tempDbQuery();
-  // }, []);
-
-  // useEffect(() => {
-  //   const tempDbQuery = async () => {
-  //     const docRef = doc(db, "vowel-diphthong-pairs-expt", "IU");
-  //     const docSnap = await getDoc(docRef);
-  //     if (docSnap.exists()) {
-  //       console.log("IU: ", docSnap.data());
-  //       const dataKeys = Object.keys(docSnap.data());
-  //       console.log(dataKeys.length);
-  //     }
-  //   };
-  //   tempDbQuery();
-  // }, []);
-  //
 
   async function gatherAndFilterResults(category, query, numPairs) {
     setLoading(true);
@@ -202,17 +162,14 @@ export default function Control() {
       )}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginLeft: 5 }}>
         <LeftNav onFormSubmission={onFormSubmission} setNotificationOpen={setNotificationOpen} />
-        {/* <h2 style={{ marginLeft: "10px" }}>Minimal Pairs</h2> */}
       </div>
       {loading ? (
         <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 9999 }}>
           <LinearProgress />
         </div>
-      ) : // <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
-      //   <CircularProgress style={{ marginTop: "-15vh" }} />
-      // </div>
+      ) : 
       treeData ? (
-        <TreeDiagramExpt treeData={treeData} treeDiagramName={treeDiagramName} />
+        <TreeDiagram treeData={treeData} treeDiagramName={treeDiagramName} />
       ) : null}
     </div>
   );
