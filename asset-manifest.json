@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/minimal-pairs/static/css/main.73be84f6.css",
-    "main.js": "/minimal-pairs/static/js/main.4a844561.js",
+    "main.js": "/minimal-pairs/static/js/main.0f8d09cc.js",
     "index.html": "/minimal-pairs/index.html",
     "main.73be84f6.css.map": "/minimal-pairs/static/css/main.73be84f6.css.map",
-    "main.4a844561.js.map": "/minimal-pairs/static/js/main.4a844561.js.map"
+    "main.0f8d09cc.js.map": "/minimal-pairs/static/js/main.0f8d09cc.js.map"
   },
   "entrypoints": [
     "static/css/main.73be84f6.css",
-    "static/js/main.4a844561.js"
+    "static/js/main.0f8d09cc.js"
   ]
 }
