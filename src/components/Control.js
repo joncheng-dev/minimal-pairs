@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
-import db from "./../firebase";
+import { db } from "./../firebase";
 import TreeDiagram from "./TreeDiagram";
-import { Snackbar, SnackbarContent } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import SnackbarContent from "@mui/material/SnackbarContent";
 import LinearProgress from "@mui/material/LinearProgress";
 import LeftNav from "./LeftNav";
 

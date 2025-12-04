@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { InfoOutlined } from "@mui/icons-material";
+import InfoOutlined from "@mui/icons-material/InfoOutlined";
 
 const style = {
   position: "absolute",

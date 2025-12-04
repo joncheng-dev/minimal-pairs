@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { FormControlLabel, FormControl, Grid, Typography } from "@mui/material";
-import {
-  Box,
-  Button,
-  Checkbox,
-  ListItemText,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  Stack,
-  Switch,
-  Tooltip,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormControl from "@mui/material/FormControl";
+import Grid from "@mui/material/Grid";
+import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Select from "@mui/material/Select";
+import Stack from "@mui/material/Stack";
+import Switch from "@mui/material/Switch";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
 import disableIncompatibleValues from "../util/disableIncompatibleValues";
 import { consonantCharList, vowelCharList } from "../data/characterLists";
 import { alpha, styled } from "@mui/material/styles";
@@ -182,10 +183,10 @@ export default function Form(props) {
   return (
     <>
       <Grid container mt={2} mb={2} display="flex">
-        <Grid item>
+        <Grid>
           <Typography variant="h5">Minimal Pairs</Typography>
         </Grid>
-        <Grid item alignItems="flex-start">
+        <Grid alignItems="flex-start">
           <BasicModal />
         </Grid>
       </Grid>
